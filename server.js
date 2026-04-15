@@ -59,12 +59,17 @@ function detectChatError(error) {
     };
   }
 
-  if (message.includes("NOT_FOUND")) {
+  if (
+    message.includes("NOT_FOUND") ||
+    message.includes("NOT FOUND") ||
+    message.includes("MODEL NOT FOUND") ||
+    message.includes("MODELS/")
+  ) {
     return {
       status: 404,
       code: "MODEL_NOT_FOUND",
       error: "Model Gemini không tồn tại hoặc không dùng được.",
-      hint: "Kiểm tra GEMINI_MODEL trong file .env."
+      hint: "Kiểm tra GEMINI_MODEL trên Vercel Environment Variables, hoặc bỏ biến này để dùng model mặc định."
     };
   }
 
