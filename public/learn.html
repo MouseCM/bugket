@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bugket - Từ vựng mới</title>
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/">
+          <img class="brand-logo" src="/logo.png" alt="bugket logo" />
+          <span>bugket</span>
+        </a>
+        <div class="menu">
+          <a href="/">Trang chủ</a>
+          <a class="active" href="/learn.html">Từ vựng</a>
+          <a href="/games.html">Trò chơi</a>
+          <a href="/chat.html">Trò chuyện AI</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container section">
+      <h1>Học từ vựng mới</h1>
+      <p class="muted">Xem danh sách từ, học bằng flashcard và tập đặt câu.</p>
+      <section class="card intent-card" id="word-intent-box"></section>
+
+      <section class="card" style="margin-bottom: 14px">
+        <h3>Tiến độ học hôm nay</h3>
+        <div class="kpi">
+          <div class="item">
+            <div class="muted small">Tổng từ hiện có</div>
+            <strong id="learn-total-words">0</strong>
+          </div>
+          <div class="item">
+            <div class="muted small">Mục tiêu hôm nay</div>
+            <strong>10 từ</strong>
+          </div>
+          <div class="item">
+            <div class="muted small">Trạng thái</div>
+            <strong id="learn-status">Đang học</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" style="margin-bottom: 14px">
+        <div class="flashcard">
+          <p class="small muted">Flashcard</p>
+          <h2 class="word-big" id="flash-word">Đang tải...</h2>
+          <p id="flash-meaning"></p>
+          <p class="muted" id="flash-example"></p>
+          <button class="btn btn-primary" id="next-word">Từ tiếp theo</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Danh sách từ vựng</h3>
+        <div id="word-list" class="word-list"></div>
+      </section>
+
+      <section class="card" style="margin-top: 14px">
+        <h3>Kế hoạch tự học gợi ý</h3>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Bước 1: Nhận diện</h3>
+            <p class="muted">Đọc từ, nghe phát âm, ghi nhớ nghĩa và loại từ (noun, verb, adjective).</p>
+          </div>
+          <div class="card">
+            <h3>Bước 2: Vận dụng</h3>
+            <p class="muted">Đặt 2 câu với từ mới: 1 câu khẳng định và 1 câu phủ định.</p>
+          </div>
+          <div class="card">
+            <h3>Bước 3: Ôn tập</h3>
+            <p class="muted">Quay lại ôn sau 24h bằng game và hội thoại AI để nhớ lâu hơn.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="/js/word-intent.js"></script>
+    <script src="/js/learn.js"></script>
+  </body>
+</html>

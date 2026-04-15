@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bugket - Trò chuyện AI</title>
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/">
+          <img class="brand-logo" src="/logo.png" alt="bugket logo" />
+          <span>bugket</span>
+        </a>
+        <div class="menu">
+          <a href="/">Trang chủ</a>
+          <a href="/learn.html">Từ vựng</a>
+          <a href="/games.html">Trò chơi</a>
+          <a class="active" href="/chat.html">Trò chuyện AI</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container section">
+      <h1>Luyện nói chuyện với AI</h1>
+      <p class="muted">Đặt câu hỏi bằng tiếng Việt hoặc tiếng Anh. AI sẽ giải thích dễ hiểu và có ví dụ.</p>
+      <section class="card">
+        <div class="chat-box" id="chat-box"></div>
+        <textarea id="chat-input" rows="3" placeholder="Ví dụ: Giúp mình phân biệt since và for"></textarea>
+        <div class="btn-row" style="margin-top: 10px">
+          <button id="send-btn" class="btn btn-primary">Gửi cho AI</button>
+        </div>
+      </section>
+    </main>
+    <script src="/js/chat.js"></script>
+  </body>
+</html>

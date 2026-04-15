@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bugket - Game trắc nghiệm</title>
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/">
+          <img class="brand-logo" src="/logo.png" alt="bugket logo" />
+          <span>bugket</span>
+        </a>
+        <div class="menu">
+          <a href="/">Trang chủ</a>
+          <a href="/learn.html">Từ vựng</a>
+          <a class="active" href="/games.html">Trò chơi</a>
+          <a href="/chat.html">Trò chuyện AI</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container section">
+      <h1>Game: Trắc nghiệm nghĩa từ</h1>
+      <p class="muted">Chọn đúng nghĩa tiếng Việt của từ tiếng Anh.</p>
+
+      <section class="card">
+        <h2 id="quiz-word">...</h2>
+        <p class="small">Điểm: <strong id="score-quiz">0</strong> | Số câu: <strong id="attempt-quiz">0</strong></p>
+        <p class="small" id="level-row-quiz" style="display: none">Đánh giá: <strong id="level-quiz"></strong></p>
+        <div id="quiz-options" class="quiz-options"></div>
+        <div class="btn-row" style="margin-top: 10px">
+          <button class="btn btn-secondary" id="next-quiz">Câu tiếp theo</button>
+        </div>
+        <p id="quiz-result"></p>
+      </section>
+    </main>
+
+    <script src="/js/games-quiz.js"></script>
+  </body>
+</html>

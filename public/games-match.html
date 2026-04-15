@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bugket - Game ghép từ</title>
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/">
+          <img class="brand-logo" src="/logo.png" alt="bugket logo" />
+          <span>bugket</span>
+        </a>
+        <div class="menu">
+          <a href="/">Trang chủ</a>
+          <a href="/learn.html">Từ vựng</a>
+          <a class="active" href="/games.html">Trò chơi</a>
+          <a href="/chat.html">Trò chuyện AI</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container section">
+      <h1>Game: Ghép từ với nghĩa</h1>
+      <p class="muted">Chọn một từ tiếng Anh và một nghĩa tiếng Việt để ghép đúng.</p>
+
+      <section class="card">
+        <p class="small">Điểm: <strong id="score-match">0</strong> | Lượt thử: <strong id="attempt-match">0</strong></p>
+        <p class="small" id="level-row-match" style="display: none">Đánh giá: <strong id="level-match"></strong></p>
+        <div class="match-grid">
+          <div>
+            <p class="small muted">Từ tiếng Anh</p>
+            <div id="match-english" class="stack-list"></div>
+          </div>
+          <div>
+            <p class="small muted">Nghĩa tiếng Việt</p>
+            <div id="match-vietnamese" class="stack-list"></div>
+          </div>
+        </div>
+        <div class="btn-row" style="margin-top: 10px">
+          <button class="btn btn-secondary" id="reset-match">Làm mới game ghép</button>
+        </div>
+        <p id="match-result"></p>
+      </section>
+    </main>
+
+    <script src="/js/games-match.js"></script>
+  </body>
+</html>

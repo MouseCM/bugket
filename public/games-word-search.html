@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bugket - Game tìm từ</title>
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/">
+          <img class="brand-logo" src="/logo.png" alt="bugket logo" />
+          <span>bugket</span>
+        </a>
+        <div class="menu">
+          <a href="/">Trang chủ</a>
+          <a href="/learn.html">Từ vựng</a>
+          <a class="active" href="/games.html">Trò chơi</a>
+          <a href="/chat.html">Trò chuyện AI</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container section">
+      <h1>Game: Tìm từ trong bảng chữ</h1>
+      <p class="muted">Chọn các ô theo thứ tự, sau đó bấm Gửi để kiểm tra từ.</p>
+
+      <section class="card">
+        <div id="target-words" class="muted"></div>
+        <p class="small">Điểm: <strong id="score-word-search">0</strong> | Lượt thử: <strong id="attempt-word-search">0</strong></p>
+        <p class="small" id="level-row-word-search" style="display: none">Đánh giá: <strong id="level-word-search"></strong></p>
+        <p class="small">Từ đang chọn: <strong id="current-selection">-</strong></p>
+        <div id="puzzle-grid" class="puzzle-grid"></div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="submit-puzzle">Gửi từ đã chọn</button>
+          <button class="btn btn-secondary" id="clear-puzzle">Xóa lựa chọn</button>
+        </div>
+        <p id="puzzle-result"></p>
+      </section>
+    </main>
+
+    <script src="/js/games-word-search.js"></script>
+  </body>
+</html>

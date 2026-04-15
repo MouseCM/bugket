@@ -1,0 +1,27 @@
+{
+  "name": "bugket",
+  "version": "1.0.0",
+  "description": "English learning web app with games and Gemini chat",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MouseCM/bugket.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MouseCM/bugket/issues"
+  },
+  "homepage": "https://github.com/MouseCM/bugket#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}
