@@ -95,6 +95,7 @@ submitPuzzleBtn?.addEventListener("click", () => {
   const picked = selectedWord();
   if (!picked) {
     puzzleResult.textContent = "Bạn chưa chọn ô nào.";
+    puzzleResult.style.color = "#fbbf24";
     return;
   }
   attempts += 1;
@@ -109,15 +110,19 @@ submitPuzzleBtn?.addEventListener("click", () => {
     selectedIndices = [];
     updateCurrentSelection();
     puzzleResult.textContent = `Tuyệt vời! Bạn đã tìm được: ${picked}`;
+    puzzleResult.style.color = "#33d17a";
   } else if (foundWords.has(picked)) {
     puzzleResult.textContent = `Từ "${picked}" bạn đã tìm rồi.`;
+    puzzleResult.style.color = "#fbbf24";
     clearSelection();
   } else {
     puzzleResult.textContent = `"${picked}" chưa đúng. Thử lại nhé!`;
+    puzzleResult.style.color = "#ff6a88";
     clearSelection();
   }
   if (foundWords.size === puzzleWords.length) {
     puzzleResult.textContent = "Bạn đã hoàn thành tất cả từ! Chúc mừng!";
+    puzzleResult.style.color = "#33d17a";
   }
   renderStats();
 });

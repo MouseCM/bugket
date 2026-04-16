@@ -53,29 +53,69 @@
     </nav>
 
     <main class="container section">
-      <h1>Game: Ghép từ với nghĩa</h1>
-      <p class="muted">Chọn một từ tiếng Anh và một nghĩa tiếng Việt để ghép đúng.</p>
+      <div class="game-shell">
+        <section class="game-hero">
+          <div class="card game-hero-main">
+            <div class="game-eyebrow">Matching Game</div>
+            <h1 class="game-title">Ghép từ với nghĩa</h1>
+            <p class="game-subtitle">Chọn 1 từ tiếng Anh và 1 nghĩa tiếng Việt tương ứng. Mỗi lượt ghép đúng sẽ giúp bạn tăng phản xạ nhận diện nghĩa nhanh hơn.</p>
+          </div>
+          <aside class="card game-meta-card">
+            <h3>Cách chơi nhanh</h3>
+            <div class="game-tip-list">
+              <div class="game-tip">Bấm vào 1 từ tiếng Anh ở cột trái.</div>
+              <div class="game-tip">Chọn nghĩa tiếng Việt đúng ở cột phải.</div>
+              <div class="game-tip">Ghép đúng hết 5 cặp để hoàn thành màn chơi.</div>
+            </div>
+          </aside>
+        </section>
 
-      <section class="card">
-        <p class="small">Điểm: <strong id="score-match">0</strong> | Lượt thử: <strong id="attempt-match">0</strong></p>
-        <p class="small" id="level-row-match" style="display: none">Đánh giá: <strong id="level-match"></strong></p>
-        <div class="match-grid">
-          <div>
-            <p class="small muted">Từ tiếng Anh</p>
-            <div id="match-english" class="stack-list"></div>
+        <div class="card intent-card" id="word-intent-box" style="text-align:left;"></div>
+
+        <section class="card game-panel">
+          <div class="game-stats">
+            <div class="game-stat">
+              <span class="game-stat-label">Điểm</span>
+              <strong class="game-stat-value" id="score-match">0</strong>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label">Lượt thử</span>
+              <strong class="game-stat-value" id="attempt-match">0</strong>
+            </div>
+            <div class="game-stat" id="level-row-match" style="display: none">
+              <span class="game-stat-label">Đánh giá</span>
+              <strong class="game-stat-value" id="level-match"></strong>
+            </div>
           </div>
-          <div>
-            <p class="small muted">Nghĩa tiếng Việt</p>
-            <div id="match-vietnamese" class="stack-list"></div>
+
+          <div class="game-hint">Mẹo: hãy chọn những từ bạn chắc chắn trước, sau đó suy luận các cặp còn lại.</div>
+
+          <div class="match-grid">
+            <div>
+              <div class="game-section-title">
+                <h3>Từ tiếng Anh</h3>
+                <span class="game-badge">5 từ / lượt</span>
+              </div>
+              <div id="match-english" class="stack-list"></div>
+            </div>
+            <div>
+              <div class="game-section-title">
+                <h3>Nghĩa tiếng Việt</h3>
+                <span class="game-badge">Sắp xếp ngẫu nhiên</span>
+              </div>
+              <div id="match-vietnamese" class="stack-list"></div>
+            </div>
           </div>
-        </div>
-        <div class="btn-row" style="margin-top: 10px">
-          <button class="btn btn-secondary" id="reset-match">Làm mới game ghép</button>
-        </div>
-        <p id="match-result"></p>
-      </section>
+
+          <div class="btn-row">
+            <button class="btn btn-secondary" id="reset-match">Làm mới lượt chơi</button>
+          </div>
+          <p id="match-result" class="game-result"></p>
+        </section>
+      </div>
     </main>
 
+    <script src="/js/word-intent.js"></script>
     <script src="/js/games-match.js"></script>
   </body>
 </html>

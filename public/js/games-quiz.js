@@ -45,6 +45,7 @@ function renderRound() {
   quizAnswer = picked.vietnamese;
   quizWordEl.textContent = picked.english;
   quizResultEl.textContent = "";
+  quizResultEl.style.color = "";
 
   const wrongs = shuffle(vocabWords.filter((w) => w.vietnamese !== quizAnswer))
     .slice(0, 3)
@@ -63,6 +64,7 @@ function renderRound() {
       if (opt === quizAnswer) {
         btn.classList.add("correct");
         quizResultEl.textContent = "Đúng rồi! Bạn chọn chính xác.";
+        quizResultEl.style.color = "#33d17a";
         score += 1;
       } else {
         btn.classList.add("wrong");
@@ -70,6 +72,7 @@ function renderRound() {
           if (b.textContent === quizAnswer) b.classList.add("correct");
         });
         quizResultEl.textContent = `Chưa đúng. Đáp án là: ${quizAnswer}`;
+        quizResultEl.style.color = "#ff6a88";
       }
       renderStats();
     });

@@ -53,22 +53,59 @@
     </nav>
 
     <main class="container section">
-      <h1>Game: Sắp xếp lại từ</h1>
-      <p class="muted">Giải từ bị xáo trộn chữ cái.</p>
+      <div class="game-shell">
+        <section class="game-hero">
+          <div class="card game-hero-main">
+            <div class="game-eyebrow">Unscramble Game</div>
+            <h1 class="game-title">Sắp xếp lại từ</h1>
+            <p class="game-subtitle">Một từ tiếng Anh sẽ bị xáo trộn chữ cái. Nhiệm vụ của bạn là đoán và nhập lại từ đúng nhanh nhất có thể.</p>
+          </div>
+          <aside class="card game-meta-card">
+            <h3>Cách chơi nhanh</h3>
+            <div class="game-tip-list">
+              <div class="game-tip">Quan sát các chữ cái đã bị đảo vị trí.</div>
+              <div class="game-tip">Nhập đáp án tiếng Anh vào ô bên dưới.</div>
+              <div class="game-tip">Nếu bí, bấm "Từ mới" để đổi sang lượt khác.</div>
+            </div>
+          </aside>
+        </section>
 
-      <section class="card">
-        <h2 id="scrambled"></h2>
-        <p class="small">Điểm: <strong id="score-unscramble">0</strong> | Lượt thử: <strong id="attempt-unscramble">0</strong></p>
-        <p class="small" id="level-row-unscramble" style="display: none">Đánh giá: <strong id="level-unscramble"></strong></p>
-        <input id="guess-input" placeholder="Nhập đáp án..." />
-        <div class="btn-row" style="margin-top: 10px">
-          <button class="btn btn-primary" id="check-guess">Kiểm tra</button>
-          <button class="btn btn-secondary" id="new-round">Từ mới</button>
-        </div>
-        <p id="guess-result"></p>
-      </section>
+        <div class="card intent-card" id="word-intent-box" style="text-align:left;"></div>
+
+        <section class="card game-panel">
+          <div class="game-stats">
+            <div class="game-stat">
+              <span class="game-stat-label">Điểm</span>
+              <strong class="game-stat-value" id="score-unscramble">0</strong>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label">Lượt thử</span>
+              <strong class="game-stat-value" id="attempt-unscramble">0</strong>
+            </div>
+            <div class="game-stat" id="level-row-unscramble" style="display: none">
+              <span class="game-stat-label">Đánh giá</span>
+              <strong class="game-stat-value" id="level-unscramble"></strong>
+            </div>
+          </div>
+
+          <div class="game-hint">Mẹo: hãy nhìn các cụm quen thuộc như `tion`, `ing`, `ea`, `ou` để đoán từ nhanh hơn.</div>
+
+          <div class="game-section-title">
+            <h2 id="scrambled">...</h2>
+            <span class="game-badge">1 từ / lượt</span>
+          </div>
+
+          <input id="guess-input" placeholder="Nhập đáp án tiếng Anh..." />
+          <div class="btn-row">
+            <button class="btn btn-primary" id="check-guess">Kiểm tra</button>
+            <button class="btn btn-secondary" id="new-round">Từ mới</button>
+          </div>
+          <p id="guess-result" class="game-result"></p>
+        </section>
+      </div>
     </main>
 
+    <script src="/js/word-intent.js"></script>
     <script src="/js/games-unscramble.js"></script>
   </body>
 </html>

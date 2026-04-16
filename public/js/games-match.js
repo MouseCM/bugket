@@ -63,8 +63,10 @@ function checkMatch() {
       vBtn.disabled = true;
     }
     matchResultEl.textContent = "Ghép đúng! Tiếp tục nào.";
+    matchResultEl.style.color = "#33d17a";
   } else {
     matchResultEl.textContent = "Sai cặp rồi, thử lại nhé.";
+    matchResultEl.style.color = "#ff6a88";
     matchEnglishEl.querySelectorAll(".chip-btn").forEach((b) => b.classList.remove("selected"));
     matchVietnameseEl.querySelectorAll(".chip-btn").forEach((b) => b.classList.remove("selected"));
   }
@@ -75,6 +77,7 @@ function checkMatch() {
   const total = matchEnglishEl.querySelectorAll(".chip-btn").length;
   if (matchedPairs.size === total) {
     matchResultEl.textContent = "Bạn đã ghép đúng tất cả cặp từ. Tuyệt vời!";
+    matchResultEl.style.color = "#33d17a";
   }
   renderStats();
 }
@@ -88,6 +91,7 @@ function renderMatchGame() {
   selectedVietnamese = null;
   matchedPairs = new Set();
   matchResultEl.textContent = "";
+  matchResultEl.style.color = "";
   score = 0;
   attempts = 0;
   renderStats();

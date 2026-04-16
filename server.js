@@ -74,7 +74,68 @@ const vocabulary = [
   { english: "pragmatic", vietnamese: "thực tế, thực dụng", level: "C1", ipa: "/præɡˈmætɪk/", example: "We need a pragmatic approach to the problem." },
   { english: "conundrum", vietnamese: "câu đố, vấn đề nan giải", level: "C1", ipa: "/kəˈnʌndrəm/", example: "This is a difficult conundrum to solve." },
   { english: "intricate", vietnamese: "phức tạp, tinh xảo", level: "C1", ipa: "/ˈɪntrɪkət/", example: "The watch has an intricate mechanism." },
-  { english: "resplendent", vietnamese: "rực rỡ, chói lọi", level: "C1", ipa: "/rɪˈsplendənt/", example: "She looked resplendent in her dress." }
+  { english: "resplendent", vietnamese: "rực rỡ, chói lọi", level: "C1", ipa: "/rɪˈsplendənt/", example: "She looked resplendent in her dress." },
+
+  // Additional words (to make vocabulary total = 100)
+  // Level A1 (Sơ cấp)
+  { english: "cat", vietnamese: "con mèo", level: "A1", ipa: "/kæt/", example: "The cat is sleeping." },
+  { english: "dog", vietnamese: "con chó", level: "A1", ipa: "/dɔːɡ/", example: "My dog is friendly." },
+  { english: "book", vietnamese: "quyển sách", level: "A1", ipa: "/bʊk/", example: "I read a book every week." },
+  { english: "teacher", vietnamese: "giáo viên", level: "A1", ipa: "/ˈtiːtʃər/", example: "My teacher explains clearly." },
+  { english: "student", vietnamese: "học sinh", level: "A1", ipa: "/ˈstudənt/", example: "The student is studying now." },
+  { english: "city", vietnamese: "thành phố", level: "A1", ipa: "/ˈsɪti/", example: "This city is exciting." },
+  { english: "country", vietnamese: "đất nước", level: "A1", ipa: "/ˈkʌntri/", example: "We visit a country each summer." },
+  { english: "today", vietnamese: "hôm nay", level: "A1", ipa: "/təˈdeɪ/", example: "Today is a good day to learn." },
+  { english: "tomorrow", vietnamese: "ngày mai", level: "A1", ipa: "/təˈmɒrəʊ/", example: "Let's start tomorrow." },
+  { english: "night", vietnamese: "buổi tối", level: "A1", ipa: "/naɪt/", example: "I like quiet nights." },
+
+  // Level A2 (Sơ trung cấp)
+  { english: "important", vietnamese: "quan trọng", level: "A2", ipa: "/ɪmˈpɔːrtənt/", example: "It's important to practice daily." },
+  { english: "problem", vietnamese: "vấn đề", level: "A2", ipa: "/ˈprɒbləm/", example: "Do you have a problem?" },
+  { english: "answer", vietnamese: "câu trả lời", level: "A2", ipa: "/ˈɑːnsər/", example: "The correct answer is A." },
+  { english: "question", vietnamese: "câu hỏi", level: "A2", ipa: "/ˈkwestʃən/", example: "I have a question for you." },
+  { english: "useful", vietnamese: "hữu ích", level: "A2", ipa: "/ˈjuːsfəl/", example: "This advice is useful." },
+  { english: "because", vietnamese: "bởi vì", level: "A2", ipa: "/bɪˈkɒz/", example: "I stayed home because it rained." },
+  { english: "afternoon", vietnamese: "buổi chiều", level: "A2", ipa: "/ˌæftəˈnuːn/", example: "See you in the afternoon." },
+  { english: "restaurant", vietnamese: "nhà hàng", level: "A2", ipa: "/ˈrestrɒnt/", example: "We found a nice restaurant." },
+  { english: "price", vietnamese: "giá cả", level: "A2", ipa: "/praɪs/", example: "What's the price of this?" },
+  { english: "shopping", vietnamese: "mua sắm", level: "A2", ipa: "/ˈʃɒpɪŋ/", example: "Shopping online is fast." },
+  { english: "free", vietnamese: "miễn phí", level: "A2", ipa: "/friː/", example: "The concert is free." },
+  { english: "helpful", vietnamese: "hữu ích", level: "A2", ipa: "/ˈhelpfl/", example: "Your feedback is very helpful." },
+
+  // Level B1 (Trung cấp)
+  { english: "however", vietnamese: "tuy nhiên", level: "B1", ipa: "/haʊˈevər/", example: "However, it takes time." },
+  { english: "although", vietnamese: "mặc dù", level: "B1", ipa: "/ɔːlˈðoʊ/", example: "Although it's hard, I will continue." },
+  { english: "manage", vietnamese: "quản lý", level: "B1", ipa: "/ˈmænɪdʒ/", example: "I manage my time well." },
+  { english: "provide", vietnamese: "cung cấp", level: "B1", ipa: "/prəˈvaɪd/", example: "This app provides practice." },
+  { english: "discover", vietnamese: "khám phá", level: "B1", ipa: "/dɪˈskʌvə(r)/", example: "I discovered a new word." },
+  { english: "choose", vietnamese: "chọn", level: "B1", ipa: "/tʃuːz/", example: "Choose the correct option." },
+  { english: "explain", vietnamese: "giải thích", level: "B1", ipa: "/ɪkˈspleɪn/", example: "Can you explain that again?" },
+  { english: "solve", vietnamese: "giải quyết", level: "B1", ipa: "/sɒlv/", example: "We can solve this problem." },
+  { english: "practice", vietnamese: "luyện tập", level: "B1", ipa: "/ˈpræktɪs/", example: "Practice improves your confidence." },
+  { english: "suggest", vietnamese: "gợi ý", level: "B1", ipa: "/səˈdʒest/", example: "I suggest listening first." },
+  { english: "support", vietnamese: "hỗ trợ", level: "B1", ipa: "/səˈpɔːrt/", example: "My friends support me." },
+  { english: "effort", vietnamese: "nỗ lực", level: "B1", ipa: "/ˈefət/", example: "Small effort leads to big results." },
+  { english: "compare", vietnamese: "so sánh", level: "B1", ipa: "/kəmˈpɛər/", example: "Let's compare the answers." },
+  { english: "mistake", vietnamese: "sai lầm", level: "B1", ipa: "/mɪˈsteɪk/", example: "Everyone makes mistakes." },
+
+  // Level B2 (Trung cao cấp)
+  { english: "benefit", vietnamese: "lợi ích", level: "B2", ipa: "/ˈbenɪfɪt/", example: "Studying daily has benefits." },
+  { english: "develop", vietnamese: "phát triển", level: "B2", ipa: "/dɪˈveləp/", example: "I want to develop my speaking." },
+  { english: "maintain", vietnamese: "duy trì", level: "B2", ipa: "/meɪnˈteɪn/", example: "Maintain a consistent study routine." },
+  { english: "schedule", vietnamese: "lịch trình", level: "B2", ipa: "/ˈskedʒuːl/", example: "Check your study schedule." },
+  { english: "convenient", vietnamese: "thuận tiện", level: "B2", ipa: "/kənˈviːniənt/", example: "It's convenient for me." },
+  { english: "require", vietnamese: "yêu cầu", level: "B2", ipa: "/rɪˈkwaɪər/", example: "This task requires focus." },
+  { english: "environment", vietnamese: "môi trường", level: "B2", ipa: "/ɪnˈvaɪrənmənt/", example: "We must protect the environment." },
+  { english: "responsibility", vietnamese: "trách nhiệm", level: "B2", ipa: "/rɪˌspɒnsəˈbɪləti/", example: "Responsibility makes you stronger." },
+  { english: "progress", vietnamese: "tiến bộ", level: "B2", ipa: "/ˈprəʊɡres/", example: "Your progress is impressive." },
+  { english: "necessary", vietnamese: "cần thiết", level: "B2", ipa: "/ˈnesəsəri/", example: "It's necessary to review." },
+
+  // Level C1 (Cao cấp)
+  { english: "comprehensive", vietnamese: "toàn diện", level: "C1", ipa: "/ˌkɒmprɪˈhensɪv/", example: "A comprehensive plan saves time." },
+  { english: "profound", vietnamese: "sâu sắc", level: "C1", ipa: "/prəˈfaʊnd/", example: "Her advice was profound." },
+  { english: "nuanced", vietnamese: "tinh tế", level: "C1", ipa: "/nuːˈɑːnst/", example: "The discussion was nuanced." },
+  { english: "substantial", vietnamese: "đáng kể", level: "C1", ipa: "/səbˈstænʃəl/", example: "There is a substantial improvement." }
 ];
 
 const wordSearchWords = ["ENGLISH", "PUZZLE", "LEARN", "SPEAK", "READ", "WRITE", "SMART"];

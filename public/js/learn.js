@@ -30,23 +30,95 @@ function getSpeechRecognition() {
   return window.SpeechRecognition || window.webkitSpeechRecognition || null;
 }
 
+function chooseFemaleVoice(voices) {
+  const list = voices || [];
+  const en = list.filter((v) => (v.lang || "").toLowerCase().startsWith("en"));
+
+  const byNamePriority = [
+    /samantha/i,
+    /victoria/i,
+    /zira/i,
+    /google uk english female/i,
+    /female/i,
+    /woman/i,
+    /girl/i
+  ];
+
+  for (const re of byNamePriority) {
+    const v = en.find((voice) => re.test(voice.name || ""));
+    if (v) return v;
+  }
+
+  // Try matching female-like names in all voices (some browsers mis-label lang).
+  for (const re of byNamePriority) {
+    const v = list.find((voice) => re.test(voice.name || ""));
+    if (v) return v;
+  }
+
+  // Deterministic fallback to first English voice.
+  return en[0] || list[0] || null;
+}
+
+function ensureVoicesLoaded() {
+  if (!window.speechSynthesis) return Promise.resolve([]);
+  const synth = window.speechSynthesis;
+  const existing = synth.getVoices();
+  if (existing && existing.length) return Promise.resolve(existing);
+
+  if (window.__bugketVoicesPromise) return window.__bugketVoicesPromise;
+
+  window.__bugketVoicesPromise = new Promise((resolve) => {
+    let done = false;
+    const resolveOnce = (voices) => {
+      if (done) return;
+      done = true;
+      resolve(voices || []);
+    };
+
+    const timeout = setTimeout(() => resolveOnce(synth.getVoices() || []), 2500);
+
+    const handler = () => {
+      clearTimeout(timeout);
+      resolveOnce(synth.getVoices() || []);
+    };
+
+    if (typeof synth.addEventListener === "function") {
+      synth.addEventListener("voiceschanged", handler, { once: true });
+    } else {
+      synth.onvoiceschanged = handler;
+    }
+  });
+
+  return window.__bugketVoicesPromise;
+}
+
+let speakSeq = 0;
 function speak(text, lang = "en-US") {
   if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
+  const synth = window.speechSynthesis;
+  synth.cancel();
+
   const utterance = new SpeechSynthesisUtterance(text);
-
-  // Chọn giọng Nữ tiếng Anh chuẩn, tự nhiên
-  const voices = window.speechSynthesis.getVoices();
-  const femaleVoice = voices.find(v => v.lang.startsWith("en") && (v.name.includes("Samantha") || v.name.includes("Victoria") || v.name.includes("Google UK English Female") || v.name.includes("Zira"))) 
-                   || voices.find(v => v.lang.startsWith("en") && v.name.includes("Female")) 
-                   || voices.find(v => v.lang.startsWith("en"));
-  
-  if (femaleVoice) utterance.voice = femaleVoice;
-
-  utterance.lang = "en-US";
+  utterance.lang = lang;
   utterance.rate = 0.85; // Tốc độ hơi chậm lại để dễ nghe phát âm
   utterance.pitch = 1.0; // Cao độ bình thường
-  window.speechSynthesis.speak(utterance);
+
+  const seq = ++speakSeq;
+
+  ensureVoicesLoaded().then((voices) => {
+    if (seq !== speakSeq) return;
+
+    const cached = window.__bugketFemaleVoice;
+    const isCachedUsable = cached && voices.some((v) => v === cached);
+    const femaleVoice = isCachedUsable ? cached : chooseFemaleVoice(voices);
+
+    if (femaleVoice) {
+      window.__bugketFemaleVoice = femaleVoice;
+      utterance.voice = femaleVoice;
+    }
+
+    synth.speak(utterance);
+  });
 }
 
 function escapeHtml(text) {

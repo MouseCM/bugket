@@ -53,23 +53,59 @@
     </nav>
 
     <main class="container section">
-      <h1>Game: Tìm từ trong bảng chữ</h1>
-      <p class="muted">Chọn các ô theo thứ tự, sau đó bấm Gửi để kiểm tra từ.</p>
+      <div class="game-shell">
+        <section class="game-hero">
+          <div class="card game-hero-main">
+            <div class="game-eyebrow">Word Search</div>
+            <h1 class="game-title">Tìm từ trong bảng chữ</h1>
+            <p class="game-subtitle">Quan sát ma trận chữ cái, chọn các ô theo đúng thứ tự để ghép thành từ cần tìm. Game này giúp bạn tăng khả năng nhận diện mặt chữ rất tốt.</p>
+          </div>
+          <aside class="card game-meta-card">
+            <h3>Cách chơi nhanh</h3>
+            <div class="game-tip-list">
+              <div class="game-tip">Bấm từng ô để tạo từ đang chọn.</div>
+              <div class="game-tip">Kiểm tra lại từ bằng nút xác nhận.</div>
+              <div class="game-tip">Dùng "Xóa lựa chọn" nếu chọn nhầm chữ.</div>
+            </div>
+          </aside>
+        </section>
 
-      <section class="card">
-        <div id="target-words" class="muted"></div>
-        <p class="small">Điểm: <strong id="score-word-search">0</strong> | Lượt thử: <strong id="attempt-word-search">0</strong></p>
-        <p class="small" id="level-row-word-search" style="display: none">Đánh giá: <strong id="level-word-search"></strong></p>
-        <p class="small">Từ đang chọn: <strong id="current-selection">-</strong></p>
-        <div id="puzzle-grid" class="puzzle-grid"></div>
-        <div class="btn-row">
-          <button class="btn btn-primary" id="submit-puzzle">Gửi từ đã chọn</button>
-          <button class="btn btn-secondary" id="clear-puzzle">Xóa lựa chọn</button>
-        </div>
-        <p id="puzzle-result"></p>
-      </section>
+        <div class="card intent-card" id="word-intent-box" style="text-align:left;"></div>
+
+        <section class="card game-panel">
+          <div class="game-stats">
+            <div class="game-stat">
+              <span class="game-stat-label">Điểm</span>
+              <strong class="game-stat-value" id="score-word-search">0</strong>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label">Lượt thử</span>
+              <strong class="game-stat-value" id="attempt-word-search">0</strong>
+            </div>
+            <div class="game-stat" id="level-row-word-search" style="display: none">
+              <span class="game-stat-label">Đánh giá</span>
+              <strong class="game-stat-value" id="level-word-search"></strong>
+            </div>
+          </div>
+
+          <div id="target-words" class="game-hint"></div>
+
+          <div class="game-section-title">
+            <h3>Từ bạn đang ghép</h3>
+            <span class="game-badge"><strong id="current-selection">-</strong></span>
+          </div>
+
+          <div id="puzzle-grid" class="puzzle-grid"></div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="submit-puzzle">Kiểm tra từ đã chọn</button>
+            <button class="btn btn-secondary" id="clear-puzzle">Xóa lựa chọn</button>
+          </div>
+          <p id="puzzle-result" class="game-result"></p>
+        </section>
+      </div>
     </main>
 
+    <script src="/js/word-intent.js"></script>
     <script src="/js/games-word-search.js"></script>
   </body>
 </html>

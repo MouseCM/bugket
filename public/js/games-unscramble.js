@@ -46,10 +46,16 @@ function setRound() {
   scrambledEl.textContent = shuffleWord(currentWord);
   guessInput.value = "";
   guessResult.textContent = "";
+  guessResult.style.color = "";
 }
 
 checkGuessBtn?.addEventListener("click", () => {
   const answer = guessInput.value.trim().toUpperCase();
+  if (!answer) {
+    guessResult.textContent = "Hãy nhập đáp án trước khi kiểm tra.";
+    guessResult.style.color = "#fbbf24";
+    return;
+  }
   attempts += 1;
   if (answer === currentWord) {
     guessResult.textContent = "Chính xác! Bạn giỏi quá.";
@@ -60,6 +66,13 @@ checkGuessBtn?.addEventListener("click", () => {
     guessResult.style.color = "#ff6a88";
   }
   renderStats();
+});
+
+guessInput?.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    checkGuessBtn?.click();
+  }
 });
 
 newRoundBtn?.addEventListener("click", setRound);

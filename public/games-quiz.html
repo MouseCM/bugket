@@ -53,21 +53,58 @@
     </nav>
 
     <main class="container section">
-      <h1>Game: Trắc nghiệm nghĩa từ</h1>
-      <p class="muted">Chọn đúng nghĩa tiếng Việt của từ tiếng Anh.</p>
+      <div class="game-shell">
+        <section class="game-hero">
+          <div class="card game-hero-main">
+            <div class="game-eyebrow">Quiz Game</div>
+            <h1 class="game-title">Trắc nghiệm nghĩa từ</h1>
+            <p class="game-subtitle">Đọc từ tiếng Anh và chọn nghĩa tiếng Việt đúng trong 4 đáp án. Đây là game tốt nhất để luyện tốc độ ghi nhớ từ mới.</p>
+          </div>
+          <aside class="card game-meta-card">
+            <h3>Cách chơi nhanh</h3>
+            <div class="game-tip-list">
+              <div class="game-tip">Nhìn từ tiếng Anh ở giữa màn hình.</div>
+              <div class="game-tip">Chọn 1 trong 4 đáp án tiếng Việt.</div>
+              <div class="game-tip">Bấm "Câu tiếp theo" để sang lượt mới.</div>
+            </div>
+          </aside>
+        </section>
 
-      <section class="card">
-        <h2 id="quiz-word">...</h2>
-        <p class="small">Điểm: <strong id="score-quiz">0</strong> | Số câu: <strong id="attempt-quiz">0</strong></p>
-        <p class="small" id="level-row-quiz" style="display: none">Đánh giá: <strong id="level-quiz"></strong></p>
-        <div id="quiz-options" class="quiz-options"></div>
-        <div class="btn-row" style="margin-top: 10px">
-          <button class="btn btn-secondary" id="next-quiz">Câu tiếp theo</button>
-        </div>
-        <p id="quiz-result"></p>
-      </section>
+        <div class="card intent-card" id="word-intent-box" style="text-align:left;"></div>
+
+        <section class="card game-panel">
+          <div class="game-stats">
+            <div class="game-stat">
+              <span class="game-stat-label">Điểm</span>
+              <strong class="game-stat-value" id="score-quiz">0</strong>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label">Số câu</span>
+              <strong class="game-stat-value" id="attempt-quiz">0</strong>
+            </div>
+            <div class="game-stat" id="level-row-quiz" style="display: none">
+              <span class="game-stat-label">Đánh giá</span>
+              <strong class="game-stat-value" id="level-quiz"></strong>
+            </div>
+          </div>
+
+          <div class="game-hint">Mẹo: nếu chưa chắc, hãy loại trừ đáp án sai trước rồi chọn nghĩa gần nhất.</div>
+
+          <div class="game-section-title">
+            <h2 id="quiz-word">...</h2>
+            <span class="game-badge">4 đáp án</span>
+          </div>
+
+          <div id="quiz-options" class="quiz-options"></div>
+          <div class="btn-row">
+            <button class="btn btn-secondary" id="next-quiz">Câu tiếp theo</button>
+          </div>
+          <p id="quiz-result" class="game-result"></p>
+        </section>
+      </div>
     </main>
 
+    <script src="/js/word-intent.js"></script>
     <script src="/js/games-quiz.js"></script>
   </body>
 </html>
