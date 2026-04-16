@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bugket - Từ vựng mới</title>
+    <title>bugket — Từ vựng & Phát âm</title>
+    <meta name="description" content="Học từ vựng tiếng Anh bằng flashcard, luyện phát âm với AI, xem nghĩa tiếng Việt và ví dụ thực tế." />
     <link rel="icon" type="image/png" href="/logo.png" />
     <link rel="stylesheet" href="/styles.css" />
   </head>
@@ -15,28 +16,58 @@
           <span>bugket</span>
         </a>
         <div class="menu">
-          <a href="/">Trang chủ</a>
-          <a class="active" href="/learn.html">Từ vựng</a>
-          <a href="/games.html">Trò chơi</a>
-          <a href="/chat.html">Trò chuyện AI</a>
+          <a href="/" aria-label="Trang chủ" title="Trang chủ">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 10.5 12 4l8 6.5V20a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 20v-9.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M9.5 21v-6.2A1.8 1.8 0 0 1 11.3 13h1.4a1.8 1.8 0 0 1 1.8 1.8V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span class="nav-label">Trang chủ</span>
+          </a>
+          <a href="/chat.html" aria-label="Luyện nói" title="Luyện nói">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 14a3 3 0 0 0 3-3V7a3 3 0 1 0-6 0v4a3 3 0 0 0 3 3Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M19 11a7 7 0 0 1-14 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M12 18v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M8.5 21h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span class="nav-label">Luyện nói</span>
+          </a>
+          <a class="active" href="/learn.html" aria-label="Từ vựng" title="Từ vựng">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 4.5h9.5A2.5 2.5 0 0 1 18 7v13.5c-1-.7-2.2-1.1-3.5-1.1H6A2.5 2.5 0 0 1 3.5 17V7A2.5 2.5 0 0 1 6 4.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M6.5 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M6.5 11.5h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span class="nav-label">Từ vựng</span>
+          </a>
+          <a href="/games.html" aria-label="Trò chơi" title="Trò chơi">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M8 10.8h1.4v-1.4A2 2 0 0 1 11.4 7.4h1.2a2 2 0 0 1 2 2V10.8H16a4 4 0 0 1 4 4V16a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-1.2a4 4 0 0 1 4-4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M9.2 14.6v3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M7.6 16.2h3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M15.6 15.6h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <path d="M17.6 17.2h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <span class="nav-label">Trò chơi</span>
+          </a>
         </div>
       </div>
     </nav>
 
     <main class="container section">
-      <h1>Học từ vựng mới</h1>
-      <p class="muted">Xem danh sách từ, học bằng flashcard và tập đặt câu.</p>
-      <section class="card intent-card" id="word-intent-box"></section>
+      <h1 class="section-title">Học từ vựng</h1>
+      <p class="section-sub">Flashcard + phát âm mẫu + luyện nói — học và nhớ từ vựng hiệu quả hơn</p>
 
-      <section class="card" style="margin-bottom: 14px">
-        <h3>Tiến độ học hôm nay</h3>
+      <!-- Daily Progress -->
+      <section class="card" style="margin-bottom: 20px;">
+        <h3>📊 Tiến độ hôm nay</h3>
         <div class="kpi">
           <div class="item">
-            <div class="muted small">Tổng từ hiện có</div>
+            <div class="muted small">Tổng từ vựng</div>
             <strong id="learn-total-words">0</strong>
           </div>
           <div class="item">
-            <div class="muted small">Mục tiêu hôm nay</div>
+            <div class="muted small">Mục tiêu</div>
             <strong>10 từ</strong>
           </div>
           <div class="item">
@@ -46,39 +77,107 @@
         </div>
       </section>
 
-      <section class="card" style="margin-bottom: 14px">
+      <!-- Flashcard -->
+      <section class="card" style="margin-bottom: 20px;">
         <div class="flashcard">
           <p class="small muted">Flashcard</p>
           <h2 class="word-big" id="flash-word">Đang tải...</h2>
+          <div class="ipa-display" id="flash-ipa"></div>
           <p id="flash-meaning"></p>
           <p class="muted" id="flash-example"></p>
-          <button class="btn btn-primary" id="next-word">Từ tiếp theo</button>
+
+          <!-- Listen to sample -->
+          <div class="inline-row" style="margin:16px 0;">
+            <button class="listen-btn" id="flash-listen" title="Nghe phát âm mẫu">
+              <svg viewBox="0 0 24 24" fill="none"><polygon points="5,3 19,12 5,21" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+              Nghe mẫu
+            </button>
+          </div>
+
+          <!-- Mic to practice -->
+          <div class="big-mic-area">
+            <button class="big-mic-btn" id="flash-mic" title="Bấm để nói (luyện phát âm)" aria-label="Luyện phát âm">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 14a3 3 0 0 0 3-3V7a3 3 0 1 0-6 0v4a3 3 0 0 0 3 3Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M19 11a7 7 0 0 1-14 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 18v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8.5 21h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <div class="voice-waves danger" id="flash-waves">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="mic-status" id="flash-mic-status">Bấm mic và đọc từ ở trên</div>
+          </div>
+
+          <!-- Transcript -->
+          <div class="inline-row" style="margin-top: 12px;">
+            <div class="pill">
+              <span class="small muted">Bạn nói:</span>
+              <strong id="flash-transcript">—</strong>
+            </div>
+          </div>
+
+          <!-- Score -->
+          <div class="card" id="flash-score-card" style="display:none; margin-top:16px;">
+            <div class="score-display">
+              <div class="score-value" id="flash-score-number">0</div>
+              <div class="small muted">điểm phát âm</div>
+              <div class="score-bar-wrapper">
+                <div class="score-bar-fill" id="flash-score-bar" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Feedback -->
+          <div class="feedback-panel" id="flash-feedback-panel" style="display:none; margin-top:16px;">
+            <h4>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="2"/></svg>
+              Góp ý từ AI
+            </h4>
+            <div class="feedback-content" id="flash-feedback"></div>
+          </div>
+
+          <!-- Navigation -->
+          <div class="btn-row" style="margin-top: 20px;">
+            <button class="btn btn-secondary" id="flash-retry">🔄 Nói lại</button>
+            <button class="btn btn-primary" id="next-word">Từ tiếp theo →</button>
+          </div>
         </div>
       </section>
 
+      <!-- Word List -->
       <section class="card">
-        <h3>Danh sách từ vựng</h3>
+        <h3>📖 Toàn bộ từ vựng</h3>
+        <p class="muted small" style="margin-bottom: 12px;">Bấm vào từ để nghe phát âm mẫu</p>
         <div id="word-list" class="word-list"></div>
       </section>
 
-      <section class="card" style="margin-top: 14px">
-        <h3>Kế hoạch tự học gợi ý</h3>
+      <!-- Study Tips -->
+      <section class="card" style="margin-top: 20px;">
+        <h3>💡 Chiến lược học hiệu quả</h3>
         <div class="grid-3">
-          <div class="card">
-            <h3>Bước 1: Nhận diện</h3>
-            <p class="muted">Đọc từ, nghe phát âm, ghi nhớ nghĩa và loại từ (noun, verb, adjective).</p>
+          <div class="card step-card">
+            <h3>Bước 1: Nghe</h3>
+            <p class="muted">Nghe phát âm mẫu 2-3 lần. Chú ý trọng âm và ngữ điệu.</p>
           </div>
-          <div class="card">
-            <h3>Bước 2: Vận dụng</h3>
-            <p class="muted">Đặt 2 câu với từ mới: 1 câu khẳng định và 1 câu phủ định.</p>
+          <div class="card step-card">
+            <h3>Bước 2: Nói</h3>
+            <p class="muted">Bấm mic và đọc theo. AI sẽ góp ý giúp bạn sửa ngay.</p>
           </div>
-          <div class="card">
-            <h3>Bước 3: Ôn tập</h3>
-            <p class="muted">Quay lại ôn sau 24h bằng game và hội thoại AI để nhớ lâu hơn.</p>
+          <div class="card step-card">
+            <h3>Bước 3: Dùng</h3>
+            <p class="muted">Sang trang Chat, dùng từ mới trong hội thoại với AI.</p>
           </div>
         </div>
       </section>
     </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>bugket — Luyện nói tiếng Anh cùng AI 🎙️</p>
+      </div>
+    </footer>
 
     <script src="/js/word-intent.js"></script>
     <script src="/js/learn.js"></script>

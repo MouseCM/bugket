@@ -6,7 +6,7 @@ async function loadStats() {
     if (el) el.textContent = String(data.words?.length || 0);
   } catch (_error) {
     const el = document.getElementById("kpi-words");
-    if (el) el.textContent = "-";
+    if (el) el.textContent = "—";
   }
 }
 
