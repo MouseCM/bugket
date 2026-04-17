@@ -7,8 +7,12 @@ const scoreEl = document.getElementById("score-unscramble");
 const attemptEl = document.getElementById("attempt-unscramble");
 const levelEl = document.getElementById("level-unscramble");
 const levelRowEl = document.getElementById("level-row-unscramble");
+const hintBtn = document.getElementById("hint-btn");
+const answerBtn = document.getElementById("answer-btn");
+const hintText = document.getElementById("game-hint-text");
 
 let words = [];
+let currentWordObj = null;
 let currentWord = "";
 let score = 0;
 let attempts = 0;
@@ -42,11 +46,15 @@ function shuffleWord(word) {
 }
 
 function setRound() {
-  currentWord = words[Math.floor(Math.random() * words.length)];
+  currentWordObj = words[Math.floor(Math.random() * words.length)];
+  currentWord = currentWordObj.english.toUpperCase();
   scrambledEl.textContent = shuffleWord(currentWord);
   guessInput.value = "";
   guessResult.textContent = "";
   guessResult.style.color = "";
+  if (hintText) {
+    hintText.textContent = "Mẹo: hãy nhìn các cụm quen thuộc như `tion`, `ing`, `ea`, `ou` để đoán từ nhanh hơn.";
+  }
 }
 
 checkGuessBtn?.addEventListener("click", () => {
@@ -77,10 +85,24 @@ guessInput?.addEventListener("keydown", (event) => {
 
 newRoundBtn?.addEventListener("click", setRound);
 
+hintBtn?.addEventListener("click", () => {
+  if (currentWordObj && hintText) {
+    hintText.textContent = `Gợi ý: Nghĩa tiếng Việt là "${currentWordObj.vietnamese}"`;
+  }
+});
+
+answerBtn?.addEventListener("click", () => {
+  if (currentWord) {
+    guessResult.textContent = `Đáp án là: ${currentWord}`;
+    guessResult.style.color = "#3b82f6";
+    guessInput.value = currentWord;
+  }
+});
+
 async function init() {
-  const res = await fetch("/api/games/word-search");
+  const res = await fetch("/api/words");
   const data = await res.json();
-  words = (data.words || []).map((w) => w.toUpperCase());
+  words = data.words || [];
   setRound();
   renderStats();
 }

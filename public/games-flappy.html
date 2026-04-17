@@ -3,9 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bugket - Game sắp xếp từ</title>
+    <title>bugket - Flappy Bird Học Tiếng Anh</title>
     <link rel="icon" type="image/png" href="/logo.png" />
     <link rel="stylesheet" href="/styles.css" />
+    <style>
+      .flappy-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+      }
+      #flappy-canvas {
+        background-color: #0b1021;
+        border: 4px solid #4a5578;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        max-width: 100%;
+        display: block;
+      }
+      .game-header {
+        text-align: center;
+        margin-bottom: 12px;
+      }
+      .question-box {
+        font-size: 24px;
+        font-weight: 700;
+        background: #fff;
+        padding: 8px 24px;
+        border-radius: 20px;
+        color: #ff6a88;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        display: inline-block;
+        margin-bottom: 16px;
+      }
+      .overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        border-radius: 8px;
+      }
+      .canvas-wrapper {
+        position: relative;
+      }
+    </style>
   </head>
   <body>
     <nav class="nav">
@@ -35,8 +80,6 @@
               <path d="M8 10.8h1.4v-1.4A2 2 0 0 1 11.4 7.4h1.2a2 2 0 0 1 2 2V10.8H16a4 4 0 0 1 4 4V16a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-1.2a4 4 0 0 1 4-4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
               <path d="M9.2 14.6v3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               <path d="M7.6 16.2h3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M15.6 15.6h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-              <path d="M17.6 17.2h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
             </svg>
             <span class="nav-label">Trò chơi</span>
           </a>
@@ -56,58 +99,37 @@
       <div class="game-shell">
         <section class="game-hero">
           <div class="card game-hero-main">
-            <div class="game-eyebrow">Unscramble Game</div>
-            <h1 class="game-title">Sắp xếp lại từ</h1>
-            <p class="game-subtitle">Một từ tiếng Anh sẽ bị xáo trộn chữ cái. Nhiệm vụ của bạn là đoán và nhập lại từ đúng nhanh nhất có thể.</p>
+            <div class="game-eyebrow">Space Words</div>
+            <h1 class="game-title">Tên lửa học từ</h1>
+            <p class="game-subtitle">Nhấn chuột hoặc phím Space để bay. Hãy bay qua cổng năng lượng có chứa đáp án ĐÚNG với từ tiếng Anh hiển thị nhé!</p>
           </div>
           <aside class="card game-meta-card">
             <h3>Cách chơi nhanh</h3>
             <div class="game-tip-list">
-              <div class="game-tip">Quan sát các chữ cái đã bị đảo vị trí.</div>
-              <div class="game-tip">Nhập đáp án tiếng Anh vào ô bên dưới.</div>
-              <div class="game-tip">Nếu bí, bấm "Từ mới" để đổi sang lượt khác.</div>
+              <div class="game-tip">Nhìn từ tiếng Anh trên màn hình.</div>
+              <div class="game-tip">Hai cổng năng lượng có 2 nghĩa tiếng Việt.</div>
+              <div class="game-tip">Bay vào cổng chứa nghĩa đúng để ghi điểm!</div>
             </div>
           </aside>
         </section>
 
-        <div class="card intent-card" id="word-intent-box" style="text-align:left;"></div>
-
-        <section class="card game-panel">
-          <div class="game-stats">
-            <div class="game-stat">
-              <span class="game-stat-label">Điểm</span>
-              <strong class="game-stat-value" id="score-unscramble">0</strong>
-            </div>
-            <div class="game-stat">
-              <span class="game-stat-label">Lượt thử</span>
-              <strong class="game-stat-value" id="attempt-unscramble">0</strong>
-            </div>
-            <div class="game-stat" id="level-row-unscramble" style="display: none">
-              <span class="game-stat-label">Đánh giá</span>
-              <strong class="game-stat-value" id="level-unscramble"></strong>
-            </div>
+        <section class="card game-panel flappy-container">
+          <div class="question-box" id="question-text">Loading...</div>
+          <div class="canvas-wrapper">
+             <canvas id="flappy-canvas" width="400" height="600"></canvas>
+             <div id="game-overlay" class="overlay" style="display: none;">
+                <h2 style="font-size: 32px; margin-bottom: 8px;">Game Over!</h2>
+                <p style="font-size: 20px; margin-bottom: 24px;">Điểm của bạn: <span id="final-score">0</span></p>
+                <button id="restart-btn" class="btn btn-primary">Chơi lại</button>
+             </div>
+             <div id="start-overlay" class="overlay">
+                <h2 style="font-size: 28px; margin-bottom: 24px;">Sẵn sàng chưa?</h2>
+                <button id="start-btn" class="btn btn-primary">Bắt đầu ngay</button>
+             </div>
           </div>
-
-          <div class="game-hint" id="game-hint-text" style="min-height: 24px;">Mẹo: hãy nhìn các cụm quen thuộc như `tion`, `ing`, `ea`, `ou` để đoán từ nhanh hơn.</div>
-
-          <div class="game-section-title">
-            <h2 id="scrambled">...</h2>
-            <span class="game-badge">1 từ / lượt</span>
-          </div>
-
-          <input id="guess-input" placeholder="Nhập đáp án tiếng Anh..." />
-          <div class="btn-row">
-            <button class="btn btn-primary" id="check-guess">Kiểm tra</button>
-            <button class="btn btn-secondary" id="hint-btn">Gợi ý</button>
-            <button class="btn btn-secondary" id="answer-btn">Đáp án</button>
-            <button class="btn btn-secondary" id="new-round">Từ mới</button>
-          </div>
-          <p id="guess-result" class="game-result"></p>
         </section>
       </div>
     </main>
-
-    <script src="/js/word-intent.js"></script>
-    <script src="/js/games-unscramble.js"></script>
+    <script src="/js/games-flappy.js"></script>
   </body>
 </html>
