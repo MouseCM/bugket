@@ -5,7 +5,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "postinstall": "npx prisma@5 generate",
+    "db:migrate:deploy": "npx prisma@5 migrate deploy",
+    "db:seed": "npx prisma@5 db seed"
   },
   "repository": {
     "type": "git",

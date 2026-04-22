@@ -8,7 +8,6 @@
   - Frontend: Vanilla HTML/CSS/JS (no framework, Lucide Icons via CDN for icons, Animate.css for animations, SweetAlert2 for popups)
   - Backend: Node.js, Express.js
   - Database: PostgreSQL (local, user: `mouse`, db: `bugket`, port: `5432`)
-  - ORM: Prisma v5 (`npx prisma@5` — DO NOT upgrade to v7+)
   - AI Engine: Google Generative AI (Gemini 1.5 Flash / gemini-3-flash-preview)
   - Auth: JWT (jsonwebtoken) + bcryptjs for password hashing
 

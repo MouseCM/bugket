@@ -4,7 +4,8 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
 }
 
 model User {
@@ -19,10 +20,10 @@ model User {
 }
 
 model Word {
-  id         Int      @id @default(autoincrement())
-  english    String   @unique
+  id         Int     @id @default(autoincrement())
+  english    String  @unique
   vietnamese String
-  level      String   // A1, A2, B1, B2, C1
+  level      String // A1, A2, B1, B2, C1
   ipa        String?
   example    String?
 }
