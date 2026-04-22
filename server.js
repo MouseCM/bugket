@@ -28,6 +28,12 @@ function normalizeEmail(value) {
 /* ─── Vocabulary Data is now fetched from PostgreSQL via Prisma ─── */
 
 const wordSearchWords = ["ENGLISH", "PUZZLE", "LEARN", "SPEAK", "READ", "WRITE", "SMART"];
+const cefrScoreMap = { A1: 1, A2: 2, B1: 3, B2: 4, C1: 5, C2: 6 };
+
+function getCefrScore(level) {
+  const normalizedLevel = String(level || "").trim().toUpperCase();
+  return cefrScoreMap[normalizedLevel] || 0;
+}
 
 /* ─── Conversation Topics ─── */
 const conversationTopics = [
@@ -180,6 +186,99 @@ app.get("/api/user/me", async (req, res) => {
     res.json({ user });
   } catch (error) {
     res.status(403).json({ error: "Token không hợp lệ" });
+  }
+});
+
+app.get("/api/user/rankings", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization || "";
+    const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7).trim() : "";
+    let currentUserId = null;
+
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        currentUserId = decoded?.id || null;
+      } catch (_error) {
+        currentUserId = null;
+      }
+    }
+
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        streak: true,
+        wordsLearned: true,
+        estimatedLevel: true,
+        createdAt: true
+      },
+      take: 200
+    });
+
+    const normalizedUsers = users.map((user) => ({
+      ...user,
+      levelScore: getCefrScore(user.estimatedLevel)
+    }));
+
+    const wordsRanking = [...normalizedUsers]
+      .sort((a, b) =>
+        b.wordsLearned - a.wordsLearned ||
+        b.streak - a.streak ||
+        b.levelScore - a.levelScore ||
+        a.createdAt - b.createdAt
+      )
+      .slice(0, 10)
+      .map((user, index) => ({
+        rank: index + 1,
+        name: user.name,
+        value: user.wordsLearned,
+        estimatedLevel: user.estimatedLevel,
+        isCurrentUser: currentUserId != null && user.id === currentUserId
+      }));
+
+    const streakRanking = [...normalizedUsers]
+      .sort((a, b) =>
+        b.streak - a.streak ||
+        b.wordsLearned - a.wordsLearned ||
+        b.levelScore - a.levelScore ||
+        a.createdAt - b.createdAt
+      )
+      .slice(0, 10)
+      .map((user, index) => ({
+        rank: index + 1,
+        name: user.name,
+        value: user.streak,
+        estimatedLevel: user.estimatedLevel,
+        isCurrentUser: currentUserId != null && user.id === currentUserId
+      }));
+
+    const levelRanking = [...normalizedUsers]
+      .sort((a, b) =>
+        b.levelScore - a.levelScore ||
+        b.wordsLearned - a.wordsLearned ||
+        b.streak - a.streak ||
+        a.createdAt - b.createdAt
+      )
+      .slice(0, 10)
+      .map((user, index) => ({
+        rank: index + 1,
+        name: user.name,
+        value: String(user.estimatedLevel || "A1").toUpperCase(),
+        levelScore: user.levelScore,
+        isCurrentUser: currentUserId != null && user.id === currentUserId
+      }));
+
+    res.json({
+      rankings: {
+        words: wordsRanking,
+        streak: streakRanking,
+        level: levelRanking
+      }
+    });
+  } catch (error) {
+    console.error("Ranking error:", error);
+    res.status(500).json({ error: "Không tải được bảng xếp hạng." });
   }
 });
 
