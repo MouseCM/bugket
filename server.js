@@ -14,129 +14,18 @@ const gemini = API_KEY
   ? new GoogleGenerativeAI(API_KEY)
   : null;
 
-/* ─── Vocabulary Data ─── */
-const vocabulary = [
-  // Level A1 (Sơ cấp)
-  { english: "hello", vietnamese: "xin chào", level: "A1", ipa: "/həˈləʊ/", example: "Hello, how are you?" },
-  { english: "friend", vietnamese: "người bạn", level: "A1", ipa: "/frend/", example: "She is my best friend." },
-  { english: "happy", vietnamese: "hạnh phúc, vui vẻ", level: "A1", ipa: "/ˈhæpi/", example: "I feel very happy today." },
-  { english: "water", vietnamese: "nước", level: "A1", ipa: "/ˈwɔːtər/", example: "I need to drink some water." },
-  { english: "family", vietnamese: "gia đình", level: "A1", ipa: "/ˈfæməli/", example: "My family loves to travel." },
-  { english: "learn", vietnamese: "học", level: "A1", ipa: "/lɜːn/", example: "I want to learn English." },
-  { english: "beautiful", vietnamese: "xinh đẹp", level: "A1", ipa: "/ˈbjuːtɪfl/", example: "The flower is very beautiful." },
-  { english: "morning", vietnamese: "buổi sáng", level: "A1", ipa: "/ˈmɔːnɪŋ/", example: "Good morning, everyone!" },
-  { english: "time", vietnamese: "thời gian", level: "A1", ipa: "/taɪm/", example: "What time is it?" },
-  { english: "eat", vietnamese: "ăn", level: "A1", ipa: "/iːt/", example: "I like to eat apples." },
+const { PrismaClient } = require("@prisma/client");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
-  // Level A2 (Sơ trung cấp)
-  { english: "adventure", vietnamese: "cuộc phiêu lưu", level: "A2", ipa: "/ədˈventʃər/", example: "Learning English is an adventure." },
-  { english: "challenge", vietnamese: "thử thách", level: "A2", ipa: "/ˈtʃælɪndʒ/", example: "This game is a fun challenge." },
-  { english: "improve", vietnamese: "cải thiện", level: "A2", ipa: "/ɪmˈpruːv/", example: "I want to improve my speaking." },
-  { english: "habit", vietnamese: "thói quen", level: "A2", ipa: "/ˈhæbɪt/", example: "Reading everyday is a good habit." },
-  { english: "memory", vietnamese: "trí nhớ", level: "A2", ipa: "/ˈmeməri/", example: "Games help your memory." },
-  { english: "vocabulary", vietnamese: "từ vựng", level: "A2", ipa: "/vəˈkæbjʊləri/", example: "Building vocabulary is important." },
-  { english: "describe", vietnamese: "mô tả", level: "A2", ipa: "/dɪˈskraɪb/", example: "Can you describe your hometown?" },
-  { english: "decide", vietnamese: "quyết định", level: "A2", ipa: "/dɪˈsaɪd/", example: "I decide to study abroad." },
-  { english: "borrow", vietnamese: "mượn", level: "A2", ipa: "/ˈbɒrəʊ/", example: "Can I borrow your book?" },
-  { english: "careful", vietnamese: "cẩn thận", level: "A2", ipa: "/ˈkeəfl/", example: "Please be careful!" },
+const prisma = new PrismaClient();
+const JWT_SECRET = process.env.JWT_SECRET || "fallback_secret";
 
-  // Level B1 (Trung cấp)
-  { english: "confident", vietnamese: "tự tin", level: "B1", ipa: "/ˈkɒnfɪdənt/", example: "She feels confident in class." },
-  { english: "creative", vietnamese: "sáng tạo", level: "B1", ipa: "/kriˈeɪtɪv/", example: "He gave a creative answer." },
-  { english: "curious", vietnamese: "tò mò", level: "B1", ipa: "/ˈkjʊəriəs/", example: "Curious students ask questions." },
-  { english: "conversation", vietnamese: "cuộc hội thoại", level: "B1", ipa: "/ˌkɒnvəˈseɪʃən/", example: "We had a friendly conversation." },
-  { english: "pronunciation", vietnamese: "phát âm", level: "B1", ipa: "/prəˌnʌnsiˈeɪʃən/", example: "Good pronunciation takes practice." },
-  { english: "fluent", vietnamese: "lưu loát", level: "B1", ipa: "/ˈfluːənt/", example: "She is fluent in three languages." },
-  { english: "communicate", vietnamese: "giao tiếp", level: "B1", ipa: "/kəˈmjuːnɪkeɪt/", example: "We communicate through words." },
-  { english: "opportunity", vietnamese: "cơ hội", level: "B1", ipa: "/ˌɒpəˈtjuːnɪti/", example: "This is a great opportunity to learn." },
-  { english: "experience", vietnamese: "kinh nghiệm, trải nghiệm", level: "B1", ipa: "/ɪkˈspɪəriəns/", example: "Traveling is a wonderful experience." },
-  { english: "knowledge", vietnamese: "kiến thức", level: "B1", ipa: "/ˈnɒlɪdʒ/", example: "Reading books expands your knowledge." },
+function normalizeEmail(value) {
+  return String(value || "").trim().toLowerCase();
+}
 
-  // Level B2 (Trung cao cấp)
-  { english: "essential", vietnamese: "thiết yếu", level: "B2", ipa: "/ɪˈsenʃəl/", example: "Water is essential for life." },
-  { english: "accomplish", vietnamese: "hoàn thành", level: "B2", ipa: "/əˈkʌmplɪʃ/", example: "She accomplished all her goals." },
-  { english: "enthusiasm", vietnamese: "sự nhiệt tình", level: "B2", ipa: "/ɪnˈθjuːziæzəm/", example: "His enthusiasm is contagious." },
-  { english: "persevere", vietnamese: "kiên trì", level: "B2", ipa: "/ˌpɜːsɪˈvɪər/", example: "You must persevere to succeed." },
-  { english: "significant", vietnamese: "đáng kể, quan trọng", level: "B2", ipa: "/sɪɡˈnɪfɪkənt/", example: "There is a significant difference." },
-  { english: "fascinating", vietnamese: "hấp dẫn, lôi cuốn", level: "B2", ipa: "/ˈfæsɪneɪtɪŋ/", example: "The history of this city is fascinating." },
-  { english: "ambitious", vietnamese: "tham vọng", level: "B2", ipa: "/æmˈbɪʃəs/", example: "He is an ambitious young man." },
-  { english: "versatile", vietnamese: "linh hoạt, đa năng", level: "B2", ipa: "/ˈvɜːsətaɪl/", example: "A smartphone is a versatile device." },
-  { english: "perspective", vietnamese: "góc nhìn, quan điểm", level: "B2", ipa: "/pəˈspektɪv/", example: "We need to look at this from a different perspective." },
-  { english: "resilient", vietnamese: "kiên cường", level: "B2", ipa: "/rɪˈzɪliənt/", example: "She is very resilient and never gives up." },
-
-  // Level C1 (Cao cấp)
-  { english: "eloquent", vietnamese: "hùng hồn, lưu loát", level: "C1", ipa: "/ˈeləkwənt/", example: "She made an eloquent speech." },
-  { english: "meticulous", vietnamese: "tỉ mỉ, quá kỹ càng", level: "C1", ipa: "/məˈtɪkjələs/", example: "He is meticulous about his work." },
-  { english: "ubiquitous", vietnamese: "xuất hiện ở khắp nơi", level: "C1", ipa: "/juːˈbɪkwɪtəs/", example: "Smartphones have become ubiquitous." },
-  { english: "ephemeral", vietnamese: "chóng vánh, phù du", level: "C1", ipa: "/ɪˈfemərəl/", example: "Fame can be ephemeral." },
-  { english: "serendipity", vietnamese: "sự tình cờ may mắn", level: "C1", ipa: "/ˌserənˈdɪpəti/", example: "We found this cafe by pure serendipity." },
-  { english: "paradigm", vietnamese: "mô hình, hệ chuẩn", level: "C1", ipa: "/ˈpærədaɪm/", example: "We need a paradigm shift in education." },
-  { english: "pragmatic", vietnamese: "thực tế, thực dụng", level: "C1", ipa: "/præɡˈmætɪk/", example: "We need a pragmatic approach to the problem." },
-  { english: "conundrum", vietnamese: "câu đố, vấn đề nan giải", level: "C1", ipa: "/kəˈnʌndrəm/", example: "This is a difficult conundrum to solve." },
-  { english: "intricate", vietnamese: "phức tạp, tinh xảo", level: "C1", ipa: "/ˈɪntrɪkət/", example: "The watch has an intricate mechanism." },
-  { english: "resplendent", vietnamese: "rực rỡ, chói lọi", level: "C1", ipa: "/rɪˈsplendənt/", example: "She looked resplendent in her dress." },
-
-  // Additional words (to make vocabulary total = 100)
-  // Level A1 (Sơ cấp)
-  { english: "cat", vietnamese: "con mèo", level: "A1", ipa: "/kæt/", example: "The cat is sleeping." },
-  { english: "dog", vietnamese: "con chó", level: "A1", ipa: "/dɔːɡ/", example: "My dog is friendly." },
-  { english: "book", vietnamese: "quyển sách", level: "A1", ipa: "/bʊk/", example: "I read a book every week." },
-  { english: "teacher", vietnamese: "giáo viên", level: "A1", ipa: "/ˈtiːtʃər/", example: "My teacher explains clearly." },
-  { english: "student", vietnamese: "học sinh", level: "A1", ipa: "/ˈstudənt/", example: "The student is studying now." },
-  { english: "city", vietnamese: "thành phố", level: "A1", ipa: "/ˈsɪti/", example: "This city is exciting." },
-  { english: "country", vietnamese: "đất nước", level: "A1", ipa: "/ˈkʌntri/", example: "We visit a country each summer." },
-  { english: "today", vietnamese: "hôm nay", level: "A1", ipa: "/təˈdeɪ/", example: "Today is a good day to learn." },
-  { english: "tomorrow", vietnamese: "ngày mai", level: "A1", ipa: "/təˈmɒrəʊ/", example: "Let's start tomorrow." },
-  { english: "night", vietnamese: "buổi tối", level: "A1", ipa: "/naɪt/", example: "I like quiet nights." },
-
-  // Level A2 (Sơ trung cấp)
-  { english: "important", vietnamese: "quan trọng", level: "A2", ipa: "/ɪmˈpɔːrtənt/", example: "It's important to practice daily." },
-  { english: "problem", vietnamese: "vấn đề", level: "A2", ipa: "/ˈprɒbləm/", example: "Do you have a problem?" },
-  { english: "answer", vietnamese: "câu trả lời", level: "A2", ipa: "/ˈɑːnsər/", example: "The correct answer is A." },
-  { english: "question", vietnamese: "câu hỏi", level: "A2", ipa: "/ˈkwestʃən/", example: "I have a question for you." },
-  { english: "useful", vietnamese: "hữu ích", level: "A2", ipa: "/ˈjuːsfəl/", example: "This advice is useful." },
-  { english: "because", vietnamese: "bởi vì", level: "A2", ipa: "/bɪˈkɒz/", example: "I stayed home because it rained." },
-  { english: "afternoon", vietnamese: "buổi chiều", level: "A2", ipa: "/ˌæftəˈnuːn/", example: "See you in the afternoon." },
-  { english: "restaurant", vietnamese: "nhà hàng", level: "A2", ipa: "/ˈrestrɒnt/", example: "We found a nice restaurant." },
-  { english: "price", vietnamese: "giá cả", level: "A2", ipa: "/praɪs/", example: "What's the price of this?" },
-  { english: "shopping", vietnamese: "mua sắm", level: "A2", ipa: "/ˈʃɒpɪŋ/", example: "Shopping online is fast." },
-  { english: "free", vietnamese: "miễn phí", level: "A2", ipa: "/friː/", example: "The concert is free." },
-  { english: "helpful", vietnamese: "hữu ích", level: "A2", ipa: "/ˈhelpfl/", example: "Your feedback is very helpful." },
-
-  // Level B1 (Trung cấp)
-  { english: "however", vietnamese: "tuy nhiên", level: "B1", ipa: "/haʊˈevər/", example: "However, it takes time." },
-  { english: "although", vietnamese: "mặc dù", level: "B1", ipa: "/ɔːlˈðoʊ/", example: "Although it's hard, I will continue." },
-  { english: "manage", vietnamese: "quản lý", level: "B1", ipa: "/ˈmænɪdʒ/", example: "I manage my time well." },
-  { english: "provide", vietnamese: "cung cấp", level: "B1", ipa: "/prəˈvaɪd/", example: "This app provides practice." },
-  { english: "discover", vietnamese: "khám phá", level: "B1", ipa: "/dɪˈskʌvə(r)/", example: "I discovered a new word." },
-  { english: "choose", vietnamese: "chọn", level: "B1", ipa: "/tʃuːz/", example: "Choose the correct option." },
-  { english: "explain", vietnamese: "giải thích", level: "B1", ipa: "/ɪkˈspleɪn/", example: "Can you explain that again?" },
-  { english: "solve", vietnamese: "giải quyết", level: "B1", ipa: "/sɒlv/", example: "We can solve this problem." },
-  { english: "practice", vietnamese: "luyện tập", level: "B1", ipa: "/ˈpræktɪs/", example: "Practice improves your confidence." },
-  { english: "suggest", vietnamese: "gợi ý", level: "B1", ipa: "/səˈdʒest/", example: "I suggest listening first." },
-  { english: "support", vietnamese: "hỗ trợ", level: "B1", ipa: "/səˈpɔːrt/", example: "My friends support me." },
-  { english: "effort", vietnamese: "nỗ lực", level: "B1", ipa: "/ˈefət/", example: "Small effort leads to big results." },
-  { english: "compare", vietnamese: "so sánh", level: "B1", ipa: "/kəmˈpɛər/", example: "Let's compare the answers." },
-  { english: "mistake", vietnamese: "sai lầm", level: "B1", ipa: "/mɪˈsteɪk/", example: "Everyone makes mistakes." },
-
-  // Level B2 (Trung cao cấp)
-  { english: "benefit", vietnamese: "lợi ích", level: "B2", ipa: "/ˈbenɪfɪt/", example: "Studying daily has benefits." },
-  { english: "develop", vietnamese: "phát triển", level: "B2", ipa: "/dɪˈveləp/", example: "I want to develop my speaking." },
-  { english: "maintain", vietnamese: "duy trì", level: "B2", ipa: "/meɪnˈteɪn/", example: "Maintain a consistent study routine." },
-  { english: "schedule", vietnamese: "lịch trình", level: "B2", ipa: "/ˈskedʒuːl/", example: "Check your study schedule." },
-  { english: "convenient", vietnamese: "thuận tiện", level: "B2", ipa: "/kənˈviːniənt/", example: "It's convenient for me." },
-  { english: "require", vietnamese: "yêu cầu", level: "B2", ipa: "/rɪˈkwaɪər/", example: "This task requires focus." },
-  { english: "environment", vietnamese: "môi trường", level: "B2", ipa: "/ɪnˈvaɪrənmənt/", example: "We must protect the environment." },
-  { english: "responsibility", vietnamese: "trách nhiệm", level: "B2", ipa: "/rɪˌspɒnsəˈbɪləti/", example: "Responsibility makes you stronger." },
-  { english: "progress", vietnamese: "tiến bộ", level: "B2", ipa: "/ˈprəʊɡres/", example: "Your progress is impressive." },
-  { english: "necessary", vietnamese: "cần thiết", level: "B2", ipa: "/ˈnesəsəri/", example: "It's necessary to review." },
-
-  // Level C1 (Cao cấp)
-  { english: "comprehensive", vietnamese: "toàn diện", level: "C1", ipa: "/ˌkɒmprɪˈhensɪv/", example: "A comprehensive plan saves time." },
-  { english: "profound", vietnamese: "sâu sắc", level: "C1", ipa: "/prəˈfaʊnd/", example: "Her advice was profound." },
-  { english: "nuanced", vietnamese: "tinh tế", level: "C1", ipa: "/nuːˈɑːnst/", example: "The discussion was nuanced." },
-  { english: "substantial", vietnamese: "đáng kể", level: "C1", ipa: "/səbˈstænʃəl/", example: "There is a substantial improvement." }
-];
+/* ─── Vocabulary Data is now fetched from PostgreSQL via Prisma ─── */
 
 const wordSearchWords = ["ENGLISH", "PUZZLE", "LEARN", "SPEAK", "READ", "WRITE", "SMART"];
 
@@ -182,8 +71,116 @@ app.get("/api/health", (_req, res) => {
 });
 
 /* ─── Words API ─── */
-app.get("/api/words", (_req, res) => {
-  res.json({ words: vocabulary });
+app.get("/api/words", async (req, res) => {
+  try {
+    const requestedLimit = parseInt(req.query.limit, 10);
+    const limit = Number.isFinite(requestedLimit)
+      ? Math.min(2000, Math.max(1, requestedLimit))
+      : 1000;
+    const wordsFromDb = await prisma.word.findMany({ take: limit });
+    res.json({ words: wordsFromDb });
+  } catch (error) {
+    console.error("Lỗi khi gọi Database:", error);
+    res.status(500).json({ error: "Lỗi kết nối cơ sở dữ liệu." });
+  }
+});
+
+/* ─── Authentication API ─── */
+app.post("/api/auth/register", async (req, res) => {
+  try {
+    const email = normalizeEmail(req.body?.email);
+    const password = String(req.body?.password || "");
+    const name = String(req.body?.name || "").trim();
+
+    if (!email || !password || !name) {
+      return res.status(400).json({ error: "Thiếu thông tin đăng ký." });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ error: "Mật khẩu cần ít nhất 6 ký tự." });
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ error: "Email không hợp lệ." });
+    }
+
+    const existing = await prisma.user.findUnique({ where: { email } });
+    if (existing) {
+      return res.status(400).json({ error: "Email này đã được đăng ký." });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await prisma.user.create({
+      data: { 
+        email, 
+        password: hashedPassword, 
+        name,
+        streak: 0,
+        wordsLearned: 0,
+        estimatedLevel: "A1"
+      }
+    });
+
+    res.json({ message: "Đăng ký thành công!", user: { id: newUser.id, name: newUser.name } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Lỗi hệ thống khi đăng ký." });
+  }
+});
+
+app.post("/api/auth/login", async (req, res) => {
+  try {
+    const email = normalizeEmail(req.body?.email);
+    const password = String(req.body?.password || "");
+    if (!email || !password) {
+      return res.status(400).json({ error: "Vui lòng nhập email và mật khẩu." });
+    }
+
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      return res.status(400).json({ error: "Email không tồn tại." });
+    }
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      return res.status(400).json({ error: "Sai mật khẩu." });
+    }
+
+    const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, JWT_SECRET, { expiresIn: '7d' });
+
+    res.json({ 
+      token, 
+      user: { 
+        name: user.name, 
+        email: user.email,
+        streak: user.streak,
+        wordsLearned: user.wordsLearned,
+        estimatedLevel: user.estimatedLevel
+      } 
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Lỗi hệ thống khi đăng nhập." });
+  }
+});
+
+/* ─── GET User Stats API ─── */
+app.get("/api/user/me", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization || "";
+    const token = authHeader.split(" ")[1];
+    if (!token) return res.status(401).json({ error: "Chưa phân quyền" });
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.id },
+      select: { name: true, streak: true, wordsLearned: true, estimatedLevel: true }
+    });
+    
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json({ user });
+  } catch (error) {
+    res.status(403).json({ error: "Token không hợp lệ" });
+  }
 });
 
 /* ─── Word Search API ─── */

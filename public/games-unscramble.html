@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>bugket - Game sắp xếp từ</title>
     <link rel="icon" type="image/png" href="/logo.png" />
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/styles.css?v=4" />
   </head>
   <body>
     <nav class="nav">
@@ -70,7 +70,7 @@
           </aside>
         </section>
 
-        <div class="card intent-card" id="word-intent-box" style="text-align:left;"></div>
+        <div class="card intent-card intent-card-left" id="word-intent-box"></div>
 
         <section class="card game-panel">
           <div class="game-stats">
@@ -82,13 +82,13 @@
               <span class="game-stat-label">Lượt thử</span>
               <strong class="game-stat-value" id="attempt-unscramble">0</strong>
             </div>
-            <div class="game-stat" id="level-row-unscramble" style="display: none">
+            <div class="game-stat game-level-row" id="level-row-unscramble">
               <span class="game-stat-label">Đánh giá</span>
               <strong class="game-stat-value" id="level-unscramble"></strong>
             </div>
           </div>
 
-          <div class="game-hint" id="game-hint-text" style="min-height: 24px;">Mẹo: hãy nhìn các cụm quen thuộc như `tion`, `ing`, `ea`, `ou` để đoán từ nhanh hơn.</div>
+          <div class="game-hint game-hint-min" id="game-hint-text">Mẹo: hãy nhìn các cụm quen thuộc như `tion`, `ing`, `ea`, `ou` để đoán từ nhanh hơn.</div>
 
           <div class="game-section-title">
             <h2 id="scrambled">...</h2>
@@ -107,7 +107,9 @@
       </div>
     </main>
 
+    <script src="/js/auth.js"></script>
     <script src="/js/word-intent.js"></script>
     <script src="/js/games-unscramble.js"></script>
+    <script src="/js/animations.js"></script>
   </body>
 </html>

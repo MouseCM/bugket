@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bugket — Đăng ký</title>
+    <meta name="description" content="Tạo tài khoản bugket để luyện nói tiếng Anh cùng AI miễn phí." />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="stylesheet" href="/styles.css?v=4" />
+  </head>
+  <body class="auth-body">
+    <div class="auth-split auth-split-reverse">
+      <div class="auth-panel-right">
+        <div class="auth-form-card">
+          <div class="auth-form-header">
+            <h2 class="auth-form-title">Bắt đầu miễn phí</h2>
+            <p class="auth-form-sub">Tạo tài khoản trong 30 giây để bắt đầu luyện nói cùng AI</p>
+          </div>
+
+          <form id="register-form" class="auth-form" novalidate>
+            <div class="input-group">
+              <label class="input-label" for="name">Tên hiển thị</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <input type="text" id="name" class="input-field" placeholder="Nguyen Van A" autocomplete="name" required />
+              </div>
+              <p class="input-group-hint">Tên hiển thị sẽ xuất hiện trên dashboard và hồ sơ của bạn.</p>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label" for="email">Email</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="m3 7 9 6 9-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <input type="email" id="email" class="input-field" placeholder="example@email.com" autocomplete="email" required />
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label" for="password">Mật khẩu</label>
+              <div class="input-wrapper has-eye">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg>
+                <input type="password" id="password" class="input-field" placeholder="It nhat 6 ky tu" autocomplete="new-password" required />
+                <button type="button" class="input-eye" id="toggle-password" aria-label="Hiện hoặc ẩn mật khẩu">
+                  <svg id="eye-icon" viewBox="0 0 24 24" fill="none"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
+                </button>
+              </div>
+              <div class="password-strength" id="pwd-strength" hidden>
+                <div class="pwd-bar"><div class="pwd-fill" id="pwd-fill"></div></div>
+                <span class="pwd-label" id="pwd-label"></span>
+              </div>
+            </div>
+
+            <div class="auth-error" id="error-msg" role="alert" aria-live="polite"></div>
+
+            <button type="submit" class="auth-submit-btn" id="register-btn">
+              <span id="register-btn-text">Tạo tài khoản</span>
+              <svg class="btn-arrow" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="btn-spinner" id="register-spinner" hidden>
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="40" stroke-dashoffset="10"/></svg>
+              </span>
+            </button>
+          </form>
+
+          <div class="auth-divider"><span>Đã có tài khoản?</span></div>
+          <a href="/login.html" class="auth-alt-btn">Đăng nhập ngay</a>
+        </div>
+      </div>
+
+      <div class="auth-panel-left">
+        <a class="auth-brand" href="/">
+          <img src="/logo.png" alt="bugket" class="auth-brand-logo" />
+          <span>bugket</span>
+        </a>
+
+        <div class="auth-hero-text">
+          <h1 class="auth-headline">Học tiếng Anh<br />theo nhịp của bạn</h1>
+          <p class="auth-subline">Không học thuộc lòng nhàm chán. Bạn sẽ học qua nói chuyện, phản hồi tức thì, và trò chơi ngắn mỗi ngày.</p>
+        </div>
+
+        <div class="auth-stats-row">
+          <div class="auth-stat-pill">
+            <span class="auth-stat-val">200+</span>
+            <span class="auth-stat-key">Tu vung</span>
+          </div>
+          <div class="auth-stat-pill">
+            <span class="auth-stat-val">8</span>
+            <span class="auth-stat-key">Chu de noi</span>
+          </div>
+          <div class="auth-stat-pill">
+            <span class="auth-stat-val">5</span>
+            <span class="auth-stat-key">Game hoc</span>
+          </div>
+        </div>
+
+        <div class="auth-orb auth-orb-1"></div>
+        <div class="auth-orb auth-orb-2"></div>
+      </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/animations.js"></script>
+  </body>
+</html>

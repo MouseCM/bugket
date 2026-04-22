@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: bugket_db
+    restart: always
+    environment:
+      POSTGRES_USER: bugket
+      POSTGRES_PASSWORD: bugketpassword
+      POSTGRES_DB: bugket
+    ports:
+      - '5432:5432'
+    volumes:
+      - bugket_db_data:/var/lib/postgresql/data
+
+volumes:
+  bugket_db_data:

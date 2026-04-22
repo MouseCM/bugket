@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>bugket — Luyện nói tiếng Anh với AI</title>
-    <meta name="description" content="Nền tảng luyện nói tiếng Anh bằng AI. Trò chuyện thực tế, luyện phát âm chuẩn, học từ vựng qua game. Hoàn toàn miễn phí." />
+    <meta name="description" content="Nền tảng luyện nói tiếng Anh bằng AI. Trò chuyện thực tế, luyện phát âm chuẩn, học từ vựng qua game." />
     <link rel="icon" type="image/png" href="/logo.png" />
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/styles.css?v=4" />
   </head>
   <body>
     <nav class="nav">
@@ -54,126 +54,143 @@
       </div>
     </nav>
 
-    <header class="hero container">
-      <h1 class="hero-headline fade-in">Luyện nói tiếng Anh<br/>cùng AI</h1>
-      <p class="hero-sub fade-in fade-in-delay-1">Trò chuyện trực tiếp với AI như đang nói chuyện với người thật. Luyện phát âm chuẩn, nhận góp ý chi tiết bằng tiếng Việt.</p>
+    <header id="guest-hero" class="hero container guest-view">
+      <p class="eyebrow">Speaking Lab 24/7</p>
+      <h1 class="hero-headline">Luyện nói tiếng Anh thực chiến<br />với AI</h1>
+      <p class="hero-sub">Rèn phản xạ hội thoại, sửa phát âm theo IPA, và mở rộng vốn từ mỗi ngày trong một lộ trình ngắn gọn dễ theo dõi.</p>
 
-      <a href="/chat.html" class="speak-ai-btn fade-in fade-in-delay-2" id="speak-ai-btn" aria-label="Bắt đầu nói chuyện với AI">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 14a3 3 0 0 0 3-3V7a3 3 0 1 0-6 0v4a3 3 0 0 0 3 3Z" stroke="currentColor" stroke-width="1.8" fill="rgba(255,255,255,0.1)"/>
-          <path d="M19 11a7 7 0 0 1-14 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          <path d="M12 18v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          <path d="M8.5 21h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-        <span class="speak-ai-btn-label">Nói chuyện với AI</span>
-      </a>
+      <div class="hero-metrics">
+        <div class="hero-metric">
+          <strong>10 phút</strong>
+          <span>Lộ trình mỗi ngày</span>
+        </div>
+        <div class="hero-metric">
+          <strong>8 chủ đề</strong>
+          <span>Hội thoại tình huống</span>
+        </div>
+        <div class="hero-metric">
+          <strong>AI Feedback</strong>
+          <span>Sửa lỗi ngay sau khi nói</span>
+        </div>
+      </div>
 
-      <p class="speak-ai-hint fade-in fade-in-delay-3">
+      <div class="hero-actions">
+        <a href="/chat.html" class="speak-ai-btn" id="speak-ai-btn" aria-label="Bắt đầu nói chuyện với AI">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 14a3 3 0 0 0 3-3V7a3 3 0 1 0-6 0v4a3 3 0 0 0 3 3Z" stroke="currentColor" stroke-width="1.8" fill="rgba(255,255,255,0.1)"/>
+            <path d="M19 11a7 7 0 0 1-14 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M12 18v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M8.5 21h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span class="speak-ai-btn-label">Nói chuyện với AI</span>
+        </a>
+      </div>
+
+      <p class="speak-ai-hint">
         <span class="dot"></span>
         AI sẵn sàng lắng nghe bạn 24/7
       </p>
     </header>
 
-    <section class="container section">
-      <div class="stats-bar fade-in">
-        <div class="stat-item">
-          <div class="stat-value" id="kpi-words">0</div>
-          <div class="stat-label">Từ vựng</div>
+    <section id="user-dashboard" class="container section user-view user-dashboard section-hidden">
+      <h1 class="section-title" id="dashboard-welcome">Chào bạn, ...!</h1>
+      <p class="section-sub">Tiếp tục chuỗi học hôm nay để cải thiện phản xạ nói.</p>
+
+      <div class="stats-bar home-stats">
+        <div class="stat-item stat-item--streak">
+          <div class="stat-value" id="kpi-streak">0🔥</div>
+          <div class="stat-label">Ngày học chuỗi</div>
         </div>
-        <div class="stat-item">
-          <div class="stat-value">4+</div>
-          <div class="stat-label">Trò chơi</div>
+        <div class="stat-item stat-item--words">
+          <div class="stat-value" id="kpi-wordsLearned">0</div>
+          <div class="stat-label">Từ đã luyện</div>
         </div>
-        <div class="stat-item">
-          <div class="stat-value">∞</div>
-          <div class="stat-label">Hội thoại AI</div>
+        <div class="stat-item stat-item--level">
+          <div class="stat-value" id="kpi-level">A1</div>
+          <div class="stat-label">Trình độ ước tính</div>
         </div>
-        <div class="stat-item">
-          <div class="stat-value">24/7</div>
-          <div class="stat-label">Luôn sẵn sàng</div>
+        <div class="stat-item stat-item--library">
+          <div class="stat-value">200+</div>
+          <div class="stat-label">Kho từ mở rộng</div>
         </div>
       </div>
     </section>
 
     <section class="container section">
-      <h2 class="section-title">Tính năng chính</h2>
-      <p class="section-sub">Mọi thứ bạn cần để nói tiếng Anh tự tin hơn mỗi ngày</p>
+      <h2 class="section-title">Tính năng trọng tâm</h2>
+      <p class="section-sub">Bộ công cụ học tiếng Anh tập trung vào giao tiếp thật, không học vẹt.</p>
 
       <div class="features-grid">
-        <a href="/chat.html" class="card" id="feature-speaking">
+        <a href="/chat.html" class="card card-elevated">
           <div class="card-icon purple">
             <svg viewBox="0 0 24 24" fill="none"><path d="M12 14a3 3 0 0 0 3-3V7a3 3 0 1 0-6 0v4a3 3 0 0 0 3 3Z" stroke="currentColor" stroke-width="2"/><path d="M19 11a7 7 0 0 1-14 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 18v3M8.5 21h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </div>
-          <h3>Hội thoại với AI</h3>
-          <p class="muted">Nói chuyện tự nhiên như với người thật. AI phản hồi bằng giọng nói, có phần dịch tiếng Việt.</p>
+          <h3>Hội thoại theo chủ đề</h3>
+          <p class="muted">Tập nói trong bối cảnh thật như công việc, du lịch, nhà hàng, mua sắm.</p>
         </a>
 
-        <a href="/chat.html#pronunciation" class="card" id="feature-pronunciation">
+        <a href="/chat.html#pronunciation" class="card card-elevated">
           <div class="card-icon teal">
             <svg viewBox="0 0 24 24" fill="none"><path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="2"/></svg>
           </div>
-          <h3>Luyện phát âm</h3>
-          <p class="muted">Nghe phát âm mẫu, nói theo, nhận điểm số và góp ý chi tiết để cải thiện.</p>
+          <h3>Chấm phát âm bằng AI</h3>
+          <p class="muted">Nhận điểm, phiên âm IPA và hướng dẫn sửa lỗi ngay sau mỗi lần luyện nói.</p>
         </a>
 
-        <a href="/learn.html" class="card" id="feature-vocabulary">
+        <a href="/learn.html" class="card card-elevated">
           <div class="card-icon pink">
             <svg viewBox="0 0 24 24" fill="none"><path d="M6 4.5h9.5A2.5 2.5 0 0 1 18 7v13.5c-1-.7-2.2-1.1-3.5-1.1H6A2.5 2.5 0 0 1 3.5 17V7A2.5 2.5 0 0 1 6 4.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M6.5 8h8M6.5 11.5h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </div>
-          <h3>Từ vựng mỗi ngày</h3>
-          <p class="muted">Flashcard, nghĩa tiếng Việt, ví dụ thực tế — học theo cấp độ từ cơ bản đến nâng cao.</p>
+          <h3>Flashcard có ví dụ thật</h3>
+          <p class="muted">Học từ theo cấp độ CEFR, nghe mẫu, luyện lại và chuyển ngay sang hội thoại.</p>
         </a>
 
-        <a href="/games.html" class="card" id="feature-games">
+        <a href="/games.html" class="card card-elevated">
           <div class="card-icon yellow">
             <svg viewBox="0 0 24 24" fill="none"><path d="M8 10.8h1.4v-1.4A2 2 0 0 1 11.4 7.4h1.2a2 2 0 0 1 2 2V10.8H16a4 4 0 0 1 4 4V16a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-1.2a4 4 0 0 1 4-4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9.2 14.6v3.2M7.6 16.2h3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15.6 15.6h.01M17.6 17.2h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
           </div>
-          <h3>Game từ vựng</h3>
-          <p class="muted">4 game từ vựng: Tìm từ, Ghép nghĩa, Trắc nghiệm, Sắp xếp — luyện nhớ 100 từ mỗi ngày.</p>
+          <h3>Game củng cố trí nhớ</h3>
+          <p class="muted">Tìm từ, ghép nghĩa, quiz, sắp xếp chữ để tăng tốc độ nhớ và phản xạ.</p>
         </a>
       </div>
     </section>
 
-    <section class="container section">
+    <section class="container section section-offset">
       <div class="card intent-card" id="word-intent-box"></div>
     </section>
 
     <section class="container section">
-      <h2 class="section-title">Từ vựng (100 từ)</h2>
-      <p class="section-sub">Danh sách 100 từ vựng dùng cho học phát âm và các game từ vựng.</p>
+      <h2 class="section-title">Lộ trình học gợi ý mỗi ngày</h2>
+      <p class="section-sub">Một chu kỳ 15 phút giúp bạn cải thiện đều cả nghe, nói và vốn từ.</p>
 
-      <div class="card" style="text-align:left; width:100%; padding: 18px;">
-        <div class="home-vocab-scroll">
-          <div id="home-vocab-grid" class="word-list home-vocab-grid"></div>
+      <div class="grid-3 tips-grid">
+        <div class="card tip-card">
+          <div class="tip-icon">1</div>
+          <h3>3 phút nghe mẫu</h3>
+          <p class="muted">Chọn 5 từ mới, nghe phát âm chuẩn và ghi nhớ trọng âm chính.</p>
         </div>
-      </div>
-    </section>
-
-    <section class="container section">
-      <h2 class="section-title">Mẹo học nhanh nhớ lâu</h2>
-      <div class="grid-3">
-        <div class="card">
-          <h3>🗣️ Nói ra thành tiếng</h3>
-          <p class="muted">Đọc to mỗi từ mới. Não ghi nhớ tốt hơn khi bạn dùng cả miệng, tai lẫn mắt.</p>
+        <div class="card tip-card">
+          <div class="tip-icon">2</div>
+          <h3>7 phút luyện nói</h3>
+          <p class="muted">Nói trực tiếp với AI theo chủ đề và sửa lỗi sau từng lượt phản hồi.</p>
         </div>
-        <div class="card">
-          <h3>🔄 Ôn theo chu kỳ</h3>
-          <p class="muted">Ôn sau 1 ngày, 3 ngày, 7 ngày — chuyển từ trí nhớ ngắn hạn sang dài hạn.</p>
-        </div>
-        <div class="card">
-          <h3>⏱️ 15 phút mỗi ngày</h3>
-          <p class="muted">Học ít nhưng đều đặn. 15 phút/ngày hiệu quả hơn nhiều so với học dồn 2 tiếng.</p>
+        <div class="card tip-card">
+          <div class="tip-icon">3</div>
+          <h3>5 phút ôn game</h3>
+          <p class="muted">Chơi game từ vựng để khóa từ mới vào trí nhớ dài hạn.</p>
         </div>
       </div>
     </section>
 
     <footer class="footer">
       <div class="container">
-        <p>bugket — Luyện nói tiếng Anh cùng AI 🎙️</p>
+        <p>bugket — Luyện nói tiếng Anh cùng AI</p>
       </div>
     </footer>
 
+    <script src="/js/auth.js"></script>
     <script src="/js/word-intent.js"></script>
     <script src="/js/home.js"></script>
+    <script src="/js/animations.js"></script>
   </body>
 </html>

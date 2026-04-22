@@ -145,8 +145,10 @@ function renderFlashcard() {
 
   if (flashWord) flashWord.textContent = item.english;
   if (flashIPA) flashIPA.textContent = item.ipa || "";
-  if (flashMeaning) flashMeaning.textContent = `${item.vietnamese} — Cấp độ: ${item.level}`;
-  if (flashExample) flashExample.textContent = `💬 "${item.example}"`;
+  if (flashMeaning) flashMeaning.textContent = `${item.vietnamese || "—"} — Cấp độ: ${item.level || "A1"}`;
+  if (flashExample) {
+    flashExample.textContent = item.example ? `💬 "${item.example}"` : "💬 Chưa có ví dụ cho từ này.";
+  }
 
   // Reset pronunciation state
   if (flashTranscript) flashTranscript.textContent = "—";
@@ -161,18 +163,42 @@ function renderList() {
   if (!wordList) return;
   wordList.innerHTML = "";
 
+  if (!words.length) {
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.textContent = "Chưa có dữ liệu từ vựng để hiển thị.";
+    wordList.appendChild(empty);
+    return;
+  }
+
   words.forEach((item) => {
-    const div = document.createElement("div");
-    div.className = "word-item";
-    div.style.cursor = "pointer";
-    div.innerHTML = `
-      <strong>${item.english}</strong>
-      ${item.ipa ? `<div class="small" style="color:var(--secondary-light); margin:2px 0;">${item.ipa}</div>` : ""}
-      <p class="small muted" style="margin:4px 0 2px;">${item.vietnamese}</p>
-      <p class="small" style="margin:0;">${item.example}</p>
-    `;
-    div.addEventListener("click", () => speak(item.english));
-    wordList.appendChild(div);
+    const card = document.createElement("div");
+    card.className = "word-item";
+    card.style.cursor = "pointer";
+
+    const english = document.createElement("strong");
+    english.textContent = item.english || "—";
+    card.appendChild(english);
+
+    if (item.ipa) {
+      const ipa = document.createElement("div");
+      ipa.className = "small word-ipa";
+      ipa.textContent = item.ipa;
+      card.appendChild(ipa);
+    }
+
+    const vn = document.createElement("p");
+    vn.className = "small muted word-vn";
+    vn.textContent = item.vietnamese || "—";
+    card.appendChild(vn);
+
+    const example = document.createElement("p");
+    example.className = "small word-example";
+    example.textContent = item.example || "Không có ví dụ";
+    card.appendChild(example);
+
+    card.addEventListener("click", () => speak(item.english || ""));
+    wordList.appendChild(card);
   });
 }
 
@@ -300,6 +326,10 @@ flashRetry?.addEventListener("click", retryFlash);
 /* ─── Init ─── */
 async function init() {
   try {
+    if (wordList) {
+      wordList.innerHTML = '<p class="muted">Đang tải danh sách từ vựng...</p>';
+    }
+
     const res = await fetch("/api/words");
     const data = await res.json();
     words = data.words || [];
@@ -311,6 +341,9 @@ async function init() {
     renderList();
   } catch (_e) {
     if (flashWord) flashWord.textContent = "Lỗi tải dữ liệu";
+    if (wordList) {
+      wordList.innerHTML = '<p class="muted">Không tải được danh sách từ vựng. Vui lòng thử lại.</p>';
+    }
   }
 }
 

@@ -28,6 +28,11 @@ const listenAgainBtn = document.getElementById("listen-again-btn");
 const retryBtn = document.getElementById("retry-btn");
 const ipaDisplay = document.getElementById("ipa-display");
 
+/* ─── DOM Elements: Settings ─── */
+const voiceSelect = document.getElementById("voice-select");
+const speedSlider = document.getElementById("speed-slider");
+const speedLabel = document.getElementById("speed-label");
+
 /* ─── Tab Panels ─── */
 const tabConversation = document.getElementById("tab-conversation");
 const tabPronunciation = document.getElementById("tab-pronunciation");
@@ -38,6 +43,7 @@ const panelPronunciation = document.getElementById("panel-pronunciation");
 let conversationHistory = [];
 let currentTopicId = "free";
 let isSpeaking = false;
+let wordsForLookup = null;
 
 /* ─── Utilities ─── */
 function escapeHtml(text) {
@@ -123,6 +129,30 @@ function ensureVoicesLoaded() {
   return window.__bugketVoicesPromise;
 }
 
+let availableVoices = [];
+
+function populateVoiceList() {
+  if (!window.speechSynthesis || !voiceSelect) return;
+  ensureVoicesLoaded().then(voices => {
+    availableVoices = voices.filter(v => (v.lang || "").toLowerCase().startsWith("en"));
+    if (availableVoices.length === 0) availableVoices = voices;
+    
+    voiceSelect.innerHTML = "";
+    availableVoices.forEach((voice, i) => {
+      const option = document.createElement("option");
+      option.value = i;
+      option.textContent = `${voice.name} (${voice.lang})`;
+      
+      const defaultFemale = chooseFemaleVoice(availableVoices);
+      if (defaultFemale && voice === defaultFemale) {
+        option.selected = true;
+      }
+      
+      voiceSelect.appendChild(option);
+    });
+  });
+}
+
 let speakSeq = 0;
 function speak(text, lang = "en-US") {
   if (!window.speechSynthesis) return;
@@ -131,22 +161,31 @@ function speak(text, lang = "en-US") {
 
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = lang;
-  utterance.rate = 0.95; // Tốc độ vừa phải, tự nhiên
-  utterance.pitch = 1.0; // Cao độ bình thường
+  
+  if (speedSlider) {
+    utterance.rate = parseFloat(speedSlider.value) || 0.95;
+  } else {
+    utterance.rate = 0.95;
+  }
+  
+  utterance.pitch = 1.0; 
 
   const seq = ++speakSeq;
 
   ensureVoicesLoaded().then((voices) => {
-    // Nếu user bấm nghe nhiều lần nhanh, bỏ utterance cũ.
     if (seq !== speakSeq) return;
 
-    const cached = window.__bugketFemaleVoice;
-    const isCachedUsable = cached && voices.some((v) => v === cached);
-    const femaleVoice = isCachedUsable ? cached : chooseFemaleVoice(voices);
+    let selectedVoice = null;
+    if (voiceSelect && voiceSelect.value) {
+      selectedVoice = availableVoices[parseInt(voiceSelect.value, 10)];
+    }
+    
+    if (!selectedVoice) {
+       selectedVoice = chooseFemaleVoice(voices);
+    }
 
-    if (femaleVoice) {
-      window.__bugketFemaleVoice = femaleVoice;
-      utterance.voice = femaleVoice;
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
     }
 
     synth.speak(utterance);
@@ -155,6 +194,8 @@ function speak(text, lang = "en-US") {
 
 /* ─── Tab Switching ─── */
 window.switchTab = function(tab) {
+  if (!panelConversation || !panelPronunciation || !tabConversation || !tabPronunciation) return;
+
   if (tab === "conversation") {
     panelConversation.style.display = "";
     panelPronunciation.style.display = "none";
@@ -350,16 +391,16 @@ async function sendMessage() {
 function startVoiceInput() {
   const SpeechRecognition = getSpeechRecognition();
   if (!SpeechRecognition) {
-    micStatus.textContent = "Trình duyệt chưa hỗ trợ. Dùng Chrome/Edge.";
+    if (micStatus) micStatus.textContent = "Trình duyệt chưa hỗ trợ. Dùng Chrome/Edge.";
     return;
   }
 
   if (isSpeaking) return;
   isSpeaking = true;
 
-  micStatus.textContent = "Đang nghe... hãy nói tiếng Anh";
-  voiceMicBtn.classList.add("recording");
-  voiceWaves.classList.add("active");
+  if (micStatus) micStatus.textContent = "Đang nghe... hãy nói tiếng Anh";
+  if (voiceMicBtn) voiceMicBtn.classList.add("recording");
+  if (voiceWaves) voiceWaves.classList.add("active");
 
   const recognition = new SpeechRecognition();
   recognition.lang = "en-US";
@@ -372,28 +413,28 @@ function startVoiceInput() {
       chatInput.value = text;
       sendMessage();
     } else {
-      micStatus.textContent = "Không nghe rõ, hãy thử lại";
+      if (micStatus) micStatus.textContent = "Không nghe rõ, hãy thử lại";
     }
   };
 
   recognition.onerror = (event) => {
-    micStatus.textContent = `Lỗi: ${event?.error || "unknown"}. Hãy thử lại.`;
+    if (micStatus) micStatus.textContent = `Lỗi: ${event?.error || "unknown"}. Hãy thử lại.`;
   };
 
   recognition.onend = () => {
     isSpeaking = false;
-    voiceMicBtn.classList.remove("recording");
-    voiceWaves.classList.remove("active");
-    micStatus.textContent = "Bấm mic để nói tiếp";
+    if (voiceMicBtn) voiceMicBtn.classList.remove("recording");
+    if (voiceWaves) voiceWaves.classList.remove("active");
+    if (micStatus) micStatus.textContent = "Bấm mic để nói tiếp";
   };
 
   try {
     recognition.start();
   } catch (_e) {
     isSpeaking = false;
-    voiceMicBtn.classList.remove("recording");
-    voiceWaves.classList.remove("active");
-    micStatus.textContent = "Không thể bật micro. Kiểm tra quyền truy cập.";
+    if (voiceMicBtn) voiceMicBtn.classList.remove("recording");
+    if (voiceWaves) voiceWaves.classList.remove("active");
+    if (micStatus) micStatus.textContent = "Không thể bật micro. Kiểm tra quyền truy cập.";
   }
 }
 
@@ -436,11 +477,11 @@ async function loadTopics() {
 function playSample() {
   const target = pronounceTarget?.value?.trim();
   if (!target) {
-    pronounceStatus.textContent = "Nhập từ trước rồi bấm nghe mẫu.";
+    if (pronounceStatus) pronounceStatus.textContent = "Nhập từ trước rồi bấm nghe mẫu.";
     return;
   }
   speak(target, "en-US");
-  pronounceStatus.textContent = `Đang phát: "${target}"`;
+  if (pronounceStatus) pronounceStatus.textContent = `Đang phát: "${target}"`;
 }
 
 /* ─── Pronunciation Check ─── */
@@ -463,17 +504,17 @@ async function startPronounce() {
 
   const target = pronounceTarget.value.trim();
   if (!target) {
-    pronounceStatus.textContent = "Nhập từ/cụm từ mục tiêu trước.";
+    if (pronounceStatus) pronounceStatus.textContent = "Nhập từ/cụm từ mục tiêu trước.";
     return;
   }
 
   const SpeechRecognition = getSpeechRecognition();
   if (!SpeechRecognition) {
-    pronounceStatus.textContent = "Trình duyệt chưa hỗ trợ. Dùng Chrome/Edge.";
+    if (pronounceStatus) pronounceStatus.textContent = "Trình duyệt chưa hỗ trợ. Dùng Chrome/Edge.";
     return;
   }
 
-  pronounceStatus.textContent = "Đang nghe... hãy đọc rõ ràng";
+  if (pronounceStatus) pronounceStatus.textContent = "Đang nghe... hãy đọc rõ ràng";
   pronounceMic.classList.add("recording");
   if (pronounceWaves) pronounceWaves.classList.add("active");
 
@@ -485,7 +526,7 @@ async function startPronounce() {
   recognition.onresult = async (event) => {
     const text = event.results?.[0]?.[0]?.transcript?.trim?.() || "";
     if (pronounceTranscript) pronounceTranscript.textContent = text || "—";
-    pronounceStatus.textContent = "Đang phân tích phát âm...";
+    if (pronounceStatus) pronounceStatus.textContent = "Đang phân tích phát âm...";
 
     try {
       const { feedback, score } = await getPronunciationFeedback({ target, transcript: text });
@@ -500,14 +541,14 @@ async function startPronounce() {
         animateScore(score);
       }
 
-      pronounceStatus.textContent = "Xem góp ý bên dưới. Bấm 'Nói lại' để thử lại.";
+      if (pronounceStatus) pronounceStatus.textContent = "Xem góp ý bên dưới. Bấm 'Nói lại' để thử lại.";
     } catch (error) {
-      pronounceStatus.textContent = String(error?.message || "Lỗi.");
+      if (pronounceStatus) pronounceStatus.textContent = String(error?.message || "Lỗi.");
     }
   };
 
   recognition.onerror = (event) => {
-    pronounceStatus.textContent = `Không nghe được (${event?.error || "unknown"}).`;
+    if (pronounceStatus) pronounceStatus.textContent = `Không nghe được (${event?.error || "unknown"}).`;
   };
 
   recognition.onend = () => {
@@ -520,7 +561,7 @@ async function startPronounce() {
   } catch (_e) {
     pronounceMic.classList.remove("recording");
     if (pronounceWaves) pronounceWaves.classList.remove("active");
-    pronounceStatus.textContent = "Không thể bật micro.";
+    if (pronounceStatus) pronounceStatus.textContent = "Không thể bật micro.";
   }
 }
 
@@ -550,6 +591,18 @@ function animateScore(target) {
 }
 
 /* ─── Update IPA when target changes ─── */
+async function loadWordsForLookup() {
+  if (Array.isArray(wordsForLookup)) return wordsForLookup;
+  try {
+    const res = await fetch("/api/words");
+    const data = await res.json();
+    wordsForLookup = Array.isArray(data.words) ? data.words : [];
+  } catch (_error) {
+    wordsForLookup = [];
+  }
+  return wordsForLookup;
+}
+
 async function updateIPA() {
   if (!ipaDisplay || !pronounceTarget) return;
   const target = pronounceTarget.value.trim().toLowerCase();
@@ -558,19 +611,9 @@ async function updateIPA() {
     return;
   }
 
-  try {
-    const res = await fetch("/api/words");
-    const data = await res.json();
-    const words = data.words || [];
-    const match = words.find(w => w.english.toLowerCase() === target);
-    if (match && match.ipa) {
-      ipaDisplay.textContent = match.ipa;
-    } else {
-      ipaDisplay.textContent = "—";
-    }
-  } catch (_e) {
-    ipaDisplay.textContent = "—";
-  }
+  const words = await loadWordsForLookup();
+  const match = words.find((word) => String(word.english || "").toLowerCase() === target);
+  ipaDisplay.textContent = match && match.ipa ? match.ipa : "—";
 }
 
 /* ─── Retry Pronunciation ─── */
@@ -579,7 +622,7 @@ function retryPronunciation() {
   if (feedbackPanel) feedbackPanel.style.display = "none";
   if (pronounceTranscript) pronounceTranscript.textContent = "—";
   if (scoreBar) scoreBar.style.width = "0%";
-  pronounceStatus.textContent = "Bấm mic để thử lại";
+  if (pronounceStatus) pronounceStatus.textContent = "Bấm mic để thử lại";
 }
 
 /* ═══════════════════════════════════════════
@@ -609,15 +652,34 @@ pronounceTarget?.addEventListener("input", () => {
   ipaTimeout = setTimeout(updateIPA, 400);
 });
 
+// Settings
+if (speedSlider) {
+  speedSlider.addEventListener("input", (e) => {
+    if (speedLabel) speedLabel.textContent = parseFloat(e.target.value).toFixed(2) + "x";
+  });
+}
+
+document.querySelectorAll("[data-speed]").forEach((button) => {
+  button.addEventListener("click", () => {
+    if (!speedSlider) return;
+    const speed = parseFloat(button.getAttribute("data-speed") || "0.95");
+    speedSlider.value = String(speed);
+    speedSlider.dispatchEvent(new Event("input"));
+  });
+});
+
 /* ═══════════════════════════════════════════
    INITIALIZATION
    ═══════════════════════════════════════════ */
 
 // Welcome message
-addMessage(
-  "[EN] Hi there! I'm your English speaking partner. Pick a topic above, or just start talking! I'll help you practice and improve. [/EN] [VI] Xin chào! Mình là đối tác luyện nói tiếng Anh của bạn. Chọn chủ đề ở trên, hoặc cứ bắt đầu nói! Mình sẽ giúp bạn luyện tập và cải thiện. [/VI] [SUGGEST] Tell me about yourself | What should we talk about? | Help me practice greetings [/SUGGEST]",
-  "bot",
-  { silent: true }
-);
+if (chatBox) {
+  addMessage(
+    "[EN] Hi there! I'm your English speaking partner. Pick a topic above, or just start talking! I'll help you practice and improve. [/EN] [VI] Xin chào! Mình là đối tác luyện nói tiếng Anh của bạn. Chọn chủ đề ở trên, hoặc cứ bắt đầu nói! Mình sẽ giúp bạn luyện tập và cải thiện. [/VI] [SUGGEST] Tell me about yourself | What should we talk about? | Help me practice greetings [/SUGGEST]",
+    "bot",
+    { silent: true }
+  );
 
-loadTopics();
+  populateVoiceList();
+  loadTopics();
+}

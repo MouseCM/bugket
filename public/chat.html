@@ -6,7 +6,7 @@
     <title>bugket — Luyện nói với AI</title>
     <meta name="description" content="Trò chuyện trực tiếp với AI bằng giọng nói. Luyện phát âm, nhận góp ý chi tiết, có phiên dịch tiếng Việt." />
     <link rel="icon" type="image/png" href="/logo.png" />
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/styles.css?v=4" />
   </head>
   <body>
     <nav class="nav">
@@ -55,8 +55,7 @@
     </nav>
 
     <main class="container section">
-      <!-- Tab Switcher -->
-      <div class="btn-row" style="margin-bottom: 24px;">
+      <div class="btn-row chat-tabs">
         <button class="btn btn-primary" id="tab-conversation" onclick="switchTab('conversation')">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M7 18.5 4 21V6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8A2.5 2.5 0 0 1 17.5 17H9.2L7 18.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
           Hội thoại AI
@@ -67,22 +66,33 @@
         </button>
       </div>
 
-      <!-- ═══════ TAB: CONVERSATION ═══════ -->
+      <div class="card chat-settings-card">
+        <div class="settings-grid">
+          <div class="setting-field">
+            <label class="small muted setting-label" for="voice-select">Giọng AI trợ lý</label>
+            <select id="voice-select" class="chat-select"></select>
+          </div>
+          <div class="setting-field">
+            <label class="small muted setting-label" for="speed-slider">Tốc độ nói: <span id="speed-label">0.95x</span></label>
+            <div class="speed-row">
+              <button class="btn btn-secondary speed-preset" type="button" data-speed="0.75">Chậm</button>
+              <input type="range" class="speed-slider" id="speed-slider" min="0.5" max="1.5" step="0.05" value="0.95" />
+              <button class="btn btn-secondary speed-preset" type="button" data-speed="1.25">Nhanh</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div id="panel-conversation">
         <h1 class="section-title">Nói chuyện với AI</h1>
         <p class="section-sub">Chọn chủ đề, bấm mic để nói, hoặc gõ tin nhắn. AI sẽ trả lời bằng cả tiếng Anh và tiếng Việt.</p>
 
-        <!-- Topic Selector -->
         <div class="topic-grid" id="topic-grid"></div>
 
         <div class="chat-container">
-          <!-- Chat Messages -->
           <div class="chat-box" id="chat-box"></div>
-
-          <!-- Suggested Responses -->
           <div class="suggestions" id="suggestions"></div>
 
-          <!-- Voice Input Area -->
           <div class="big-mic-area">
             <button class="big-mic-btn" id="voice-mic-btn" title="Bấm để nói tiếng Anh" aria-label="Bấm để nói">
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -98,7 +108,6 @@
             <div class="mic-status" id="mic-status">Bấm mic để bắt đầu nói</div>
           </div>
 
-          <!-- Text Input -->
           <div class="chat-input-area">
             <textarea id="chat-input" rows="2" placeholder="Hoặc gõ tin nhắn bằng tiếng Anh hoặc tiếng Việt..."></textarea>
             <button id="send-btn" class="btn btn-primary" title="Gửi tin nhắn">
@@ -109,21 +118,18 @@
         </div>
       </div>
 
-      <!-- ═══════ TAB: PRONUNCIATION ═══════ -->
-      <div id="panel-pronunciation" style="display:none;">
+      <div id="panel-pronunciation" class="chat-panel-hidden">
         <h1 class="section-title">Luyện phát âm</h1>
-        <p class="section-sub">Nghe phát âm mẫu → Nói theo → Nhận góp ý chi tiết với phiên âm IPA và hướng dẫn tiếng Việt</p>
+        <p class="section-sub">Nghe phát âm mẫu, nói theo, nhận điểm kèm IPA và góp ý rõ ràng bằng tiếng Việt.</p>
 
         <div class="chat-container">
-          <div class="card" style="margin-bottom: 16px;">
-            <!-- Word Input -->
-            <div style="margin-bottom: 16px;">
-              <label class="small muted" for="pronounce-target" style="display:block; margin-bottom:6px; text-align:left;">Nhập từ/cụm từ muốn luyện</label>
+          <div class="card section-block">
+            <div class="section-block">
+              <label class="small muted setting-label" for="pronounce-target">Nhập từ hoặc cụm từ muốn luyện</label>
               <input id="pronounce-target" type="text" placeholder="Ví dụ: adventure, pronunciation, beautiful..." />
             </div>
 
-            <!-- Sample Audio -->
-            <div class="inline-row" style="margin-bottom: 16px;">
+            <div class="inline-row section-block">
               <button class="listen-btn" id="listen-sample-btn" title="Nghe phát âm mẫu">
                 <svg viewBox="0 0 24 24" fill="none"><polygon points="5,3 19,12 5,21" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
                 Nghe phát âm mẫu
@@ -134,7 +140,6 @@
               </div>
             </div>
 
-            <!-- Record -->
             <div class="big-mic-area">
               <button class="big-mic-btn" id="pronounce-mic" title="Bấm để nói" aria-label="Bấm để nói">
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -150,8 +155,7 @@
               <div class="mic-status" id="pronounce-status">Bấm mic và đọc từ ở trên</div>
             </div>
 
-            <!-- Transcript -->
-            <div class="inline-row" style="margin-top: 12px;">
+            <div class="inline-row section-top">
               <div class="pill">
                 <span class="small muted">Bạn vừa nói:</span>
                 <strong id="pronounce-transcript">—</strong>
@@ -159,17 +163,16 @@
             </div>
           </div>
 
-          <!-- Score Display -->
-          <div class="card" id="score-card" style="display:none; margin-bottom: 16px;">
+          <div class="card section-hidden section-block" id="score-card">
             <div class="score-display">
               <div class="score-value" id="score-number">0</div>
               <div class="small muted">điểm phát âm</div>
               <div class="score-bar-wrapper">
-                <div class="score-bar-fill" id="score-bar" style="width: 0%"></div>
+                <div class="score-bar-fill" id="score-bar"></div>
               </div>
             </div>
-            <div class="btn-row" style="margin-top: 12px;">
-              <button class="btn btn-secondary" id="retry-btn" title="Thử lại">🔄 Nói lại</button>
+            <div class="btn-row section-top">
+              <button class="btn btn-secondary" id="retry-btn" title="Thử lại">Nói lại</button>
               <button class="listen-btn" id="listen-again-btn" title="Nghe lại mẫu">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><polygon points="5,3 19,12 5,21" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
                 Nghe lại mẫu
@@ -177,8 +180,7 @@
             </div>
           </div>
 
-          <!-- Feedback Panel -->
-          <div class="feedback-panel" id="feedback-panel" style="display:none;">
+          <div class="feedback-panel section-hidden" id="feedback-panel">
             <h4>
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="2"/></svg>
               Góp ý phát âm từ AI
@@ -191,10 +193,12 @@
 
     <footer class="footer">
       <div class="container">
-        <p>bugket — Luyện nói tiếng Anh cùng AI 🎙️</p>
+        <p>bugket — Luyện nói tiếng Anh cùng AI</p>
       </div>
     </footer>
 
     <script src="/js/chat.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/animations.js"></script>
   </body>
 </html>
