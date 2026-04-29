@@ -328,10 +328,10 @@ async function startFlashPronounce() {
       const { feedback, score } = await getPronunciationFeedback({ target, transcript: text });
 
       if (flashFeedback) flashFeedback.innerHTML = formatFeedback(feedback);
-      if (flashFeedbackPanel) flashFeedbackPanel.style.display = "";
+      if (flashFeedbackPanel) flashFeedbackPanel.style.display = "block";
 
       if (score !== null && score !== undefined && flashScoreCard) {
-        flashScoreCard.style.display = "";
+        flashScoreCard.style.display = "block";
         animateScore(score, flashScoreNumber, flashScoreBar);
       }
 
