@@ -25,6 +25,61 @@ const learnStatus = document.getElementById("learn-status");
 let words = [];
 let index = 0;
 
+// Words learned this session (by english text) — avoid double-counting
+const learnedThisSession = new Set();
+
+/* ─── Progress API ─── */
+async function recordWordLearned() {
+  const token = localStorage.getItem("token");
+  if (!token) return; // Not logged in — skip silently
+
+  try {
+    const res = await fetch("/api/user/progress", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      // Update cached user in localStorage so dashboard reflects latest stats
+      const cachedRaw = localStorage.getItem("user");
+      if (cachedRaw && data.user) {
+        try {
+          const cached = JSON.parse(cachedRaw);
+          localStorage.setItem("user", JSON.stringify({ ...cached, ...data.user }));
+        } catch { /* ignore */ }
+      }
+      showProgressToast(data.user);
+    }
+  } catch { /* non-critical — ignore */ }
+}
+
+function showProgressToast(user) {
+  const existing = document.getElementById("progress-toast");
+  if (existing) existing.remove();
+
+  const toast = document.createElement("div");
+  toast.id = "progress-toast";
+  toast.style.cssText = [
+    "position:fixed;bottom:24px;right:24px;z-index:9999",
+    "background:linear-gradient(135deg,#7c3aed,#2563eb)",
+    "color:#fff;padding:14px 20px;border-radius:14px",
+    "box-shadow:0 8px 32px rgba(0,0,0,.4);font-size:14px",
+    "display:flex;flex-direction:column;gap:4px",
+    "animation:slideInRight .3s ease"
+  ].join(";");
+
+  const streak = user?.streak ?? "—";
+  const words  = user?.wordsLearned ?? "—";
+  const level  = user?.estimatedLevel ?? "—";
+
+  toast.innerHTML = `
+    <strong style="font-size:15px">✅ Từ đã được ghi nhận!</strong>
+    <span>🔥 Streak: ${streak} ngày &nbsp;|&nbsp; 📚 Từ đã học: ${words} &nbsp;|&nbsp; 🎯 Level: ${level}</span>
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => { toast.style.opacity = "0"; toast.style.transition = "opacity .5s"; setTimeout(() => toast.remove(), 500); }, 3500);
+}
+
 /* ─── Utilities ─── */
 function getSpeechRecognition() {
   return window.SpeechRecognition || window.webkitSpeechRecognition || null;
@@ -281,10 +336,17 @@ async function startFlashPronounce() {
       }
 
       if (flashMicStatus) flashMicStatus.textContent = "Xem góp ý bên dưới ↓";
+
+      // Record progress if score is acceptable (≥50) and word not yet counted
+      if (score != null && score >= 50 && !learnedThisSession.has(target)) {
+        learnedThisSession.add(target);
+        await recordWordLearned();
+      }
     } catch (error) {
       if (flashMicStatus) flashMicStatus.textContent = String(error?.message || "Lỗi.");
     }
   };
+
 
   recognition.onerror = (event) => {
     if (flashMicStatus) flashMicStatus.textContent = `Không nghe được (${event?.error || "unknown"}).`;
