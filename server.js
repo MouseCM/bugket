@@ -15,7 +15,18 @@ const express = require("express");
 const cors    = require("cors");
 const path    = require("path");
 
+const http    = require("http");
+const socketIo = require("socket.io");
+
 const app  = express();
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 
 /* ── Middleware ── */
@@ -23,12 +34,22 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
+// Inject io into req for use in routes if needed
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+
+/* ── Socket.IO Setup ── */
+require("./lib/socket")(io);
+
 /* ── API Routes ── */
 app.use("/api/auth",                 require("./routes/auth"));
 app.use("/api/user",                 require("./routes/user"));
 app.use("/api/words",                require("./routes/words"));
 app.use("/api/chat",                 require("./routes/chat"));
 app.use("/api/games",                require("./routes/games"));
+app.use("/api/social",               require("./routes/social"));
 
 /* ── Legacy alias: /api/pronunciation → /api/chat/pronunciation ──
    Keep existing frontend calls working without changes. */
@@ -52,11 +73,11 @@ app.get(/.*/, (_req, res) => {
 });
 
 /* ── Export for Vercel ── */
-module.exports = app;
+module.exports = server;
 
 /* ── Start local server ── */
 if (!process.env.VERCEL) {
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`🚀 Bugket server running at http://localhost:${PORT}`);
   });
 }

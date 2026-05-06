@@ -9,17 +9,85 @@ generator client {
 }
 
 model User {
-  id                   Int       @id @default(autoincrement())
-  email                String    @unique
+  id                   Int             @id @default(autoincrement())
+  email                String          @unique
   password             String
   name                 String
-  streak               Int       @default(0)
-  wordsLearned         Int       @default(0)
-  estimatedLevel       String    @default("A1")
+  streak               Int             @default(0)
+  wordsLearned         Int             @default(0)
+  estimatedLevel       String          @default("A1")
   lastLearnedAt        DateTime?
   passwordResetToken   String?
   passwordResetExpiry  DateTime?
-  createdAt            DateTime  @default(now())
+  createdAt            DateTime        @default(now())
+
+  // Social relations
+  sentRequests         FriendRequest[] @relation("Requester")
+  receivedRequests     FriendRequest[] @relation("Receiver")
+  friendsA             Friendship[]    @relation("UserA")
+  friendsB             Friendship[]    @relation("UserB")
+  sentMessages         Message[]       @relation("Sender")
+  conversations        Participant[]
+}
+
+// A pending friend request from requester → receiver
+model FriendRequest {
+  id          Int      @id @default(autoincrement())
+  requesterId Int
+  receiverId  Int
+  status      String   @default("pending") // "pending" | "rejected"
+  createdAt   DateTime @default(now())
+
+  requester   User     @relation("Requester", fields: [requesterId], references: [id], onDelete: Cascade)
+  receiver    User     @relation("Receiver",  fields: [receiverId],  references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, receiverId])
+}
+
+// Confirmed mutual friendship
+model Friendship {
+  id        Int      @id @default(autoincrement())
+  userAId   Int
+  userBId   Int
+  createdAt DateTime @default(now())
+
+  userA     User     @relation("UserA", fields: [userAId], references: [id], onDelete: Cascade)
+  userB     User     @relation("UserB", fields: [userBId], references: [id], onDelete: Cascade)
+
+  @@unique([userAId, userBId])
+}
+
+// A 1-to-1 conversation thread
+model Conversation {
+  id           Int           @id @default(autoincrement())
+  createdAt    DateTime      @default(now())
+  participants Participant[]
+  messages     Message[]
+}
+
+// Links a User to a Conversation
+model Participant {
+  id             Int          @id @default(autoincrement())
+  userId         Int
+  conversationId Int
+
+  user           User         @relation(fields: [userId],         references: [id], onDelete: Cascade)
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, conversationId])
+}
+
+// An individual chat message
+model Message {
+  id             Int          @id @default(autoincrement())
+  conversationId Int
+  senderId       Int
+  content        String
+  read           Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         User         @relation("Sender", fields: [senderId], references: [id], onDelete: Cascade)
 }
 
 model Word {

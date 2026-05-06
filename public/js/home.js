@@ -11,25 +11,29 @@ function clearSession() {
   localStorage.removeItem("email");
 }
 
-function hydrateFromLocalUser() {
+function getCachedUser() {
   try {
     const userRaw = localStorage.getItem("user");
-    if (!userRaw) return;
-    const user = JSON.parse(userRaw);
-    if (!user) return;
-
-    const welcome = document.getElementById("dashboard-welcome");
-    const streak = document.getElementById("kpi-streak");
-    const words = document.getElementById("kpi-wordsLearned");
-    const level = document.getElementById("kpi-level");
-
-    if (welcome && user.name) welcome.textContent = `Chào bạn, ${user.name}!`;
-    if (streak && Number.isFinite(user.streak)) streak.textContent = `${user.streak}🔥`;
-    if (words && Number.isFinite(user.wordsLearned)) words.textContent = String(user.wordsLearned);
-    if (level && user.estimatedLevel) level.textContent = user.estimatedLevel;
+    return userRaw ? JSON.parse(userRaw) : null;
   } catch (_error) {
     localStorage.removeItem("user");
+    return null;
   }
+}
+
+function hydrateFromLocalUser() {
+  const user = getCachedUser();
+  if (!user) return;
+
+  const welcome = document.getElementById("dashboard-welcome");
+  const streak = document.getElementById("kpi-streak");
+  const words = document.getElementById("kpi-wordsLearned");
+  const level = document.getElementById("kpi-level");
+
+  if (welcome && user.name) welcome.textContent = `Chào bạn, ${user.name}!`;
+  if (streak && Number.isFinite(user.streak)) streak.textContent = `${user.streak}🔥`;
+  if (words && Number.isFinite(user.wordsLearned)) words.textContent = String(user.wordsLearned);
+  if (level && user.estimatedLevel) level.textContent = user.estimatedLevel;
 }
 
 async function loadHome() {
@@ -62,7 +66,9 @@ async function loadHome() {
     }
 
     const { user } = data;
+    const cachedUser = getCachedUser();
     const safeUser = {
+      id: Number(user.id) || Number(cachedUser?.id) || undefined,
       name: user.name || "Bạn",
       streak: Number(user.streak) || 0,
       wordsLearned: Number(user.wordsLearned) || 0,
