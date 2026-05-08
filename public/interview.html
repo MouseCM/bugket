@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpeakUp — Phỏng vấn với AI</title>
+    <meta name="description" content="Luyện tập phỏng vấn công việc với AI và nhận đánh giá." />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="stylesheet" href="/styles.css?v=4" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+      .role-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+      .role-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
+      .role-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+      .role-card.active { border-color: var(--primary); background: rgba(124, 58, 237, 0.1); }
+      .role-emoji { font-size: 2rem; margin-bottom: 8px; }
+      .role-name { font-weight: 500; }
+      .chat-controls { display: flex; justify-content: flex-end; margin-top: 16px; }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/">
+          <img class="brand-logo" src="/logo.png" alt="SpeakUp logo" />
+          <span>SpeakUp</span>
+        </a>
+        <div class="menu">
+          <a href="/" aria-label="Trang chủ" title="Trang chủ">
+            <span class="nav-label">Trang chủ</span>
+          </a>
+          <a href="/chat.html" aria-label="Luyện nói" title="Luyện nói">
+            <span class="nav-label">Luyện nói</span>
+          </a>
+          <a class="active" href="/interview.html" aria-label="Phỏng vấn" title="Phỏng vấn">
+            <span class="nav-label">Phỏng vấn</span>
+          </a>
+          <a href="/learn.html" aria-label="Từ vựng" title="Từ vựng">
+            <span class="nav-label">Từ vựng</span>
+          </a>
+          <a href="/games.html" aria-label="Trò chơi" title="Trò chơi">
+            <span class="nav-label">Trò chơi</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container section">
+      <h1 class="section-title">Luyện tập Phỏng vấn</h1>
+      <p class="section-sub">Chọn vai trò, tham gia phỏng vấn với AI và nhận đánh giá để cải thiện kỹ năng.</p>
+
+      <div class="role-grid" id="role-grid">
+        <!-- Roles will be loaded here -->
+      </div>
+
+      <div class="chat-container">
+        <div class="chat-box" id="chat-box"></div>
+
+        <div class="big-mic-area">
+          <button class="big-mic-btn" id="voice-mic-btn" title="Bấm để nói">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width: 32px; height: 32px;">
+              <path d="M12 14a3 3 0 0 0 3-3V7a3 3 0 1 0-6 0v4a3 3 0 0 0 3 3Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M19 11a7 7 0 0 1-14 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M12 18v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M8.5 21h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="voice-waves" id="voice-waves">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="mic-status" id="mic-status">Bấm mic để bắt đầu nói</div>
+        </div>
+
+        <div class="chat-input-area">
+          <textarea id="chat-input" rows="2" placeholder="Hoặc gõ câu trả lời..."></textarea>
+          <button id="send-btn" class="btn btn-primary" title="Gửi tin nhắn">
+            Gửi
+          </button>
+        </div>
+
+        <div class="chat-controls">
+          <button id="finish-btn" class="btn btn-secondary" style="display: none;">
+            Kết thúc phỏng vấn & Xem điểm
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>SpeakUp — Luyện nói tiếng Anh cùng AI</p>
+      </div>
+    </footer>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/interview.js"></script>
+    <script src="/js/animations.js"></script>
+  </body>
+</html>

@@ -24,7 +24,7 @@ router.get("/topics", (_req, res) => {
 /* ── POST /api/chat ── */
 router.post("/", async (req, res) => {
   try {
-    const { message, messages, topicId } = req.body || {};
+    const { message, messages, topicId, isInit } = req.body || {};
 
     if (!message || typeof message !== "string") {
       return res.status(400).json({ code: "INVALID_MESSAGE", error: "Tin nhắn không hợp lệ.", hint: "Hãy nhập nội dung trước khi gửi." });
@@ -47,7 +47,8 @@ router.post("/", async (req, res) => {
       "5. Nếu người học nói sai ngữ pháp, nhẹ nhàng sửa lại (gợi ý cách nói đúng).",
       "6. Sau mỗi câu trả lời, gợi ý 2-3 cách người học có thể trả lời tiếp, format: [SUGGEST] cách 1 | cách 2 | cách 3 [/SUGGEST]",
       "7. Điều chỉnh độ khó theo trình độ người học.",
-      topicContext ? `8. ${topicContext}` : ""
+      topicContext ? `8. ${topicContext}` : "",
+      isInit ? "9. QUAN TRỌNG: Đây là tin nhắn mở đầu cuộc trò chuyện. Hãy chào hỏi ngắn gọn và ĐẶT MỘT CÂU HỎI THÚ VỊ liên quan đến chủ đề để người học trả lời. KHÔNG HỎI 'Bạn muốn thảo luận gì?'. Hãy chủ động hỏi một câu hỏi cụ thể." : ""
     ].filter(Boolean).join("\n");
 
     const model = gemini.getGenerativeModel({ model: MODEL, systemInstruction });

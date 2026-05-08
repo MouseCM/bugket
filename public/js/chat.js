@@ -460,7 +460,34 @@ async function loadTopics() {
         conversationHistory = [];
         chatBox.innerHTML = "";
         clearSuggestions();
-        addMessage(`[EN] Great! Let's talk about "${topic.name}". What would you like to discuss? [/EN] [VI] Tuyệt! Hãy nói về "${topic.name}" nhé. Bạn muốn thảo luận gì? [/VI] [SUGGEST] Tell me about your experience | I have a question | Let's start with basics [/SUGGEST]`, "bot");
+        
+        showTyping();
+        
+        fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: `Hello! I want to talk about "${topic.name}". Please greet me and ask me a specific question about this topic to start our conversation.`,
+            isInit: true,
+            messages: [],
+            topicId: currentTopicId
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          removeTyping();
+          if (data.error) {
+             addMessage("Lỗi: " + data.error, "bot", { silent: true });
+             return;
+          }
+          if (data.reply) {
+             addMessage(data.reply, "bot");
+          }
+        })
+        .catch(_e => {
+          removeTyping();
+          addMessage(`[EN] Let's talk about "${topic.name}". What is on your mind? [/EN] [VI] Hãy nói về "${topic.name}". Bạn đang nghĩ gì? [/VI] [SUGGEST] Let's start [/SUGGEST]`, "bot", { silent: true });
+        });
       });
       topicGrid.appendChild(btn);
     });
