@@ -50,6 +50,7 @@ app.use("/api/words",                require("./routes/words"));
 app.use("/api/chat",                 require("./routes/chat"));
 app.use("/api/games",                require("./routes/games"));
 app.use("/api/social",               require("./routes/social"));
+app.use("/api/interview",            require("./routes/interview"));
 
 /* ── Legacy alias: /api/pronunciation → /api/chat/pronunciation ──
    Keep existing frontend calls working without changes. */

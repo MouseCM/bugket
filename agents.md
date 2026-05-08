@@ -5,7 +5,7 @@
 **Bugket** is an English learning web application designed to help users practice speaking, vocabulary, and listening with the help of AI (Google Gemini).
 
 - **Tech Stack:**
-  - Frontend: Vanilla HTML/CSS/JS (no framework, Lucide Icons via CDN, Animate.css, SweetAlert2)
+  - Frontend: Vanilla HTML/CSS/JS (Lucide Icons via CDN, Animate.css, SweetAlert2)
   - Backend: Node.js, Express.js
   - Database: PostgreSQL via Prisma Accelerate (cloud proxy)
   - AI Engine: Google Generative AI (Gemini 1.5 Flash / gemini-3-flash-preview)

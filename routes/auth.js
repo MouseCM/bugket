@@ -104,10 +104,10 @@ router.post("/forgot-password", async (req, res) => {
 
     await sendMail({
       to: email,
-      subject: "🔑 Bugket — Mã đặt lại mật khẩu",
+      subject: "🔑 SpeakUp — Mã đặt lại mật khẩu",
       html: `
         <div style="font-family:sans-serif;max-width:480px;margin:auto;padding:24px;background:#0f172a;color:#e2e8f0;border-radius:16px;">
-          <h2 style="color:#7c3aed;margin-top:0;">Bugket 🐛</h2>
+          <h2 style="color:#7c3aed;margin-top:0;">SpeakUp 🐛</h2>
           <p>Xin chào <strong>${user.name}</strong>,</p>
           <p>Bạn vừa yêu cầu đặt lại mật khẩu. Dùng mã bên dưới:</p>
           <div style="font-size:36px;font-weight:bold;letter-spacing:12px;text-align:center;padding:24px;background:#1e293b;border-radius:12px;color:#a78bfa;margin:24px 0;">
@@ -115,7 +115,7 @@ router.post("/forgot-password", async (req, res) => {
           </div>
           <p style="color:#94a3b8;font-size:13px;">Mã có hiệu lực trong <strong style="color:#e2e8f0;">15 phút</strong>. Nếu bạn không yêu cầu điều này, hãy bỏ qua email này.</p>
           <hr style="border-color:#334155;margin:24px 0;" />
-          <p style="font-size:12px;color:#64748b;">Bugket — Luyện tiếng Anh cùng AI</p>
+          <p style="font-size:12px;color:#64748b;">SpeakUp — Luyện tiếng Anh cùng AI</p>
         </div>
       `
     });
